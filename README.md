@@ -3,9 +3,9 @@
 Objective –
 Develop an AIsystem that will predict required manpower in support call center forfuture at monthly, daily & intraday level by TimeSeries forecasting ofDemand and supply. 
 
-Demand - Call volume
-Supply – AHT (Average Handling Time), OCC (Occupancy), SHR(Shrinkage)
-Calculated metric – Head count of support agent, SLA (Service Level Agreement)
+* Demand - Call volume
+* Supply – AHT (Average Handling Time), OCC (Occupancy), SHR(Shrinkage)
+* Calculated metric – Head count of support agent, SLA (Service Level Agreement)
 There are 5 different types of call, so time series forecasting for each 5 groups for each attribute (call volume, AHT, OCC, SHR) individually are done.  
 
 Impact -
