@@ -1,6 +1,6 @@
 # Forecast-Demand-and-Supply
 
-Objective –
+**Objective** –
 Develop an AIsystem that will predict required manpower in support call center forfuture at monthly, daily & intraday level by TimeSeries forecasting ofDemand and supply. 
 
 * Demand - Call volume
@@ -8,15 +8,14 @@ Develop an AIsystem that will predict required manpower in support call center f
 * Calculated metric – Head count of support agent, SLA (Service Level Agreement)
 There are 5 different types of call, so time series forecasting for each 5 groups for each attribute (call volume, AHT, OCC, SHR) individually are done.  
 
-Impact -
+**Impact** -
 * This helps call centre management take decision to employenough human resource to handle all call efficiently with very less waitingtime for customer. This will improve customer experience.
 * It helps to cut the extra man resource that is notrequired as per the forecasted count of call volume. So, cost saving can be achieved. 
 * By implementing this project, average NPS improved from87 (earlier was at 69) and 18% reduction in expenditure on humanresource per quarter.
 
-Steps -
+**Steps** -
 
-* Load data from multiple BigQuerytables running a file containing aggregated sql query to join them. 
-* Perform EDA from various businessperspective and performed data pre-processing like missing value handling,outlier handling, aggregated daily data to monthly (for monthlyforecasting)
+* Load data from multiple BigQuerytables running a file containing aggregated sql query to join them. * Perform EDA from various businessperspective and performed data pre-processing like missing value handling,outlier handling, aggregated daily data to monthly (for monthlyforecasting)
 * Perform hyper parameter tuning andtrained model algorithm like FBProphet, SARIMA, ETS, Triple ExponentialSmoothing, Stacking with training data.
 * Evaluate performance of each modelalgorithm with validation data based on validation metric MAPE and pickup best model and corresponding best parameters value for each attribute ineach call type. Average model accuracy is 88%. 
 * Train again the selected best modelwith whole available data (train + validation data) with corresponding bestpicked parameters value and use that model for future forecasting. 
