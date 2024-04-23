@@ -28,13 +28,16 @@ There are 5 different types of call, so time series forecasting for each 5 group
  
 **Term & definition** - 
 * AHT (Average Handling Time) – On average how much time a single support agent takes to handle a call. 
-* OCC (Occupancy) - % of support agent available inwork out of whole support agent count.= (Count ofsupport agent active in work/Count of total support agent)*100
+* OCC (Occupancy) - % of support agent available inwork out of whole support agent count.
+*                  => (Count ofsupport agent active in work/Count of total support agent)*100
 * SHR (Shrinkage) - % of inactive work time for asupport agent
 * SLA (Service Level Agreement ) - % of call attended within30 seconds
-                           = (Count of call attended within 30 seconds/count of total call offered)*100
+                                => (Count of call attended within 30 seconds/count of total call offered)*100
 * Call_type/rule_type = call related to various business segment/department So , in data call_type/rule_type is available.
 * Headcount – Count of support agent required to handle forecasted call efficiently with minimised waiting period.
-   Formula to calculate headcount – HC monthly = (Call Volume * AHT)/3600/OCC/(1-SHR) HC daily = (Call Volume * AHT)/3600/OCC/(1-SHR) /Days in Month HC intraday = (Call Volume * AHT)/3600/OCC/(1-SHR) /Days inMonth
+     HC monthly => (Call Volume * AHT)/3600/OCC/(1-SHR)
+     HC daily = (Call Volume * AHT)/3600/OCC/(1-SHR)/Days in Month
+     HC intraday = (Call Volume * AHT)/3600/OCC/(1-SHR)/Days in Month
 
 
 **Forecasting period** – 
