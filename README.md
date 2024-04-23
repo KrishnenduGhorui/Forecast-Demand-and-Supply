@@ -15,11 +15,11 @@ There are 5 different types of call, so time series forecasting for each 5 group
 
 **Steps** -
 
-* Load data from multiple BigQuerytables running a file containing aggregated sql query to join them. * Perform EDA from various businessperspective and performed data pre-processing like missing value handling,outlier handling, aggregated daily data to monthly (for monthlyforecasting)
-* Perform hyper parameter tuning andtrained model algorithm like FBProphet, SARIMA, ETS, Triple ExponentialSmoothing, Stacking with training data.
-* Evaluate performance of each modelalgorithm with validation data based on validation metric MAPE and pickup best model and corresponding best parameters value for each attribute ineach call type. Average model accuracy is 88%. 
-* Train again the selected best modelwith whole available data (train + validation data) with corresponding bestpicked parameters value and use that model for future forecasting. 
-*
+1. Load data from multiple BigQuerytables running a file containing aggregated sql query to join them. * Perform EDA from various businessperspective and performed data pre-processing like missing value handling,outlier handling, aggregated daily data to monthly (for monthlyforecasting)
+2. Perform hyper parameter tuning andtrained model algorithm like FBProphet, SARIMA, ETS, Triple ExponentialSmoothing, Stacking with training data.
+3. Evaluate performance of each modelalgorithm with validation data based on validation metric MAPE and pickup best model and corresponding best parameters value for each attribute ineach call type. Average model accuracy is 88%. 
+4. Train again the selected best modelwith whole available data (train + validation data) with corresponding bestpicked parameters value and use that model for future forecasting. 
+5. 
   * Develop a pipeline to automatewhole process (step 1-5, except EDA part) by Kedro framework on GCPDomino platform,
   * Make processing paralyzed for each call type & each metricto reduce run time
   * Make whole code parameterized using yaml file anddeployed on Google cloud platform.
