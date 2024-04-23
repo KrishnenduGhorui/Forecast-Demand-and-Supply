@@ -39,14 +39,18 @@ There are 5 different types of call, so time series forecasting for each 5 group
 * Headcount – Count of support agent required to handle forecasted call efficiently with minimised waiting period.
 
      HC monthly => (Call Volume * AHT)/3600/OCC/(1-SHR)
+  
      HC daily = (Call Volume * AHT)/3600/OCC/(1-SHR)/Days in Month
+  
      HC intraday = (Call Volume * AHT)/3600/OCC/(1-SHR)/Days in Month
+
 
 
 **Forecasting period** – 
 Monthly – future 18 months out 
 Daily – future 60 days out
 Intraday – each 30 mins interval in a day , future 60 days out   
+
 
 **Some special feature of this project are as below**–  
 
