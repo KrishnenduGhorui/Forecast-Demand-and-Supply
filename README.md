@@ -25,7 +25,7 @@ There are 5 different types of call, so time series forecasting for each 5 group
   * Make whole code parameterized using yaml file anddeployed on Google cloud platform.
 
  
-Term & definition - 
+**Term & definition** - 
 * AHT (Average Handling Time) – On average how muchtime a single support agent takes to handle a call. 
 * OCC (Occupancy) - % of support agent available inwork out of whole support agent count.= (Count ofsupport agent active in work/Count of total support agent)*100
 * SHR (Shrinkage) - % of inactive work time for asupport agent
@@ -38,7 +38,12 @@ Term & definition -
 
 **Forecasting period** – 
 Monthly – future 18 months out 
-Daily – future 60 days outIntraday – each 30 mins interval in a day , future 60 days out   
+Daily – future 60 days out
+Intraday – each 30 mins interval in a day , future 60 days out   
 
-**Some special feature of this project are as below**–  Details - 
-1.      Parameterised code – Yaml file we used to parameterised wholecode, so that we can control the processing from outside and lessen the hardcoding. Like the table name where forecastingoutput, other intermediate metrics are stored ,combination of parameters ofalgorithm , forecasting period , train, test data split ratioAll these are parameter are changeable justfrom the yaml file.  2.      Automatic process by pipeline – Whole process is automatically carried out in pipeline by kedroframework. Data loading from bigquery table, then some preprocessing, modeltraining, evaluation, picking up best model for each attribute for eachrule-type and forecasting. 3.      Real time model training –Model is always trained with data up torecent date and recent data pattern will be reflected in forecasting.Because of this there is less chance themodel to be obsolete, model is always up to date.  4.       Parallel processing – we code for parallel processing using joblib library, Paralleland delayed method. For each rule type 4s models for metrics (Call Volume, AHT, OCC, SHR)will be trained in parallel. Now for each rule type training is done parallelly. So, total 5 call type there, for each call type, 4 attribute there.Total 20 model being trained in parallel. 
+**Some special feature of this project are as below**–  
+
+1. **Parameterised code** – Yaml file we used to parameterised wholecode, so that we can control the processing from outside and lessen the hardcoding. Like the table name where forecastingoutput, other intermediate metrics are stored ,combination of parameters ofalgorithm , forecasting period , train, test data split ratioAll these are parameter are changeable justfrom the yaml file.  
+2. **Automate process by pipeline** – Whole process is automatically carried out in pipeline by kedroframework. Data loading from bigquery table, then some preprocessing, modeltraining, evaluation, picking up best model for each attribute for eachrule-type and forecasting. 
+3. **Real time model training** – Model is always trained with data up torecent date and recent data pattern will be reflected in forecasting.Because of this there is less chance themodel to be obsolete, model is always up to date.  
+4. **Parallel processing** – we code for parallel processing using joblib library, Paralleland delayed method. For each rule type 4s models for metrics (Call Volume, AHT, OCC, SHR)will be trained in parallel. Now for each rule type training is done parallelly. So, total 5 call type there, for each call type, 4 attribute there.Total 20 model being trained in parallel. 
