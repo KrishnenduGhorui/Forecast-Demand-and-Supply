@@ -25,7 +25,10 @@ There are 5 different types of call, so time series forecasting for each 5 group
   * Make processing paralyzed for each call type & each metricto reduce run time
   * Make whole code parameterized using yaml file and deployed on Google cloud platform.
 
- 
+
+![image](https://github.com/KrishnenduGhorui/Forecast-Demand-and-Supply/assets/77465776/fccf8107-6a92-4bc4-9a0e-a6ea9607666c)
+
+
 **Term & definition** - 
 * AHT (Average Handling Time) – On average how much time a single support agent takes to handle a call. 
 * OCC (Occupancy) - % of support agent available inwork out of whole support agent count.
