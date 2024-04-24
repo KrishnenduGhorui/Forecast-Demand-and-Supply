@@ -48,6 +48,8 @@ There are 5 different types of call, so time series forecasting for each 5 group
                  HC intraday = (Call Volume * AHT)/3600/OCC/(1-SHR)/Days in Month
 
 
+![image](https://github.com/KrishnenduGhorui/Forecast-Demand-and-Supply/assets/77465776/83bbecd4-97fc-4964-93a5-7d41a7e40a7e)
+
 
 **Forecasting period** – 
 Monthly – future 18 months out 
