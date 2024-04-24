@@ -6,7 +6,7 @@ Develop an AI system that will predict required manpower in support call center 
 * Demand - Call volume
 * Supply – AHT (Average Handling Time), OCC (Occupancy), SHR(Shrinkage)
 * Calculated metric – Head count of support agent, SLA (Service Level Agreement)
-There are 5 different types of call, so time series forecasting for each 5 groups for each attribute (call volume, AHT, OCC, SHR) individually are done.  
+  
 
 ### Impact -
 * This helps call centre management take decision to employe nough human resource to handle all call efficiently with very less waiting time for customer. This will improve customer experience.
@@ -49,6 +49,10 @@ There are 5 different types of call, so time series forecasting for each 5 group
 
 
 ![image](https://github.com/KrishnenduGhorui/Forecast-Demand-and-Supply/assets/77465776/83bbecd4-97fc-4964-93a5-7d41a7e40a7e)
+
+There are 5 different types of call, so time series forecasting for each 5 groups for each attribute (call volume, AHT, OCC, SHR) individually are done. 
+So, total 5*4=20 models there to forecast. 
+Now for each attribute 3-4 model algorithms are trained to 
 
 
 **Forecasting period** – 
