@@ -25,7 +25,7 @@ Develop an AI system that will predict required manpower in support call center 
 5. Train again the selected best model with whole available data (train + validation data) with corresponding bestpicked parameters value and use that model for future forecasting. 
 6. Added below mentioned mechanism -
   * Develop a pipeline to automate whole process (step 1-5, except EDA part) by **Kedro framework** on **GCP Domino platform**
-  * Make **processing paralyzed** for each call type & each metric to reduce run time using **Joblib library's Parallel,Delayed method**.
+  * Make **processing paralyzed** for each call type & each metric to reduce run time using **Joblib library's Parallel,delayed method**.
   * Make whole code parameterized using **yaml file** and deployed on **Google cloud platform**.
 
 
@@ -55,7 +55,7 @@ Develop an AI system that will predict required manpower in support call center 
 
 There are 5 different types of call, so time series forecasting for each 5 groups for each attribute (call volume, AHT, OCC, SHR) individually are done. 
 So, total 5*4=20 models there to forecast. 
-Now for each attribute 3-4 model algorithms are trained to 
+Now for each attribute 3-4 model algorithms are trained to find best working model.
 
 
 **Forecasting period** – 
@@ -68,10 +68,10 @@ Intraday – each 30 mins interval in a day , future 60 days out   
 
 ### Some special feature of this project are as below –  
 
-1. **Parameterised code** –  Yaml file is used to parameterised whole code, so that we can control the processing from outside and lessen the hardcoding. Like the table name where forecasting output, other intermediate metrics are stored ,combination of parameters of algorithm , forecasting period , train, test data split ratio. All these are parameter are changeable just from the yaml file.  
+1. **Parameterised code** –  **Yaml file** is used to parameterised whole code, so that we can control the processing from outside and lessen the hardcoding. Like the table name where forecasting output, other intermediate metrics are stored ,combination of parameters of algorithm , forecasting period , train, test data split ratio. All these are parameter are changeable just from the yaml file.  
 
 2. **Automate process by pipeline** – Whole process is automatically carried out in pipeline by **kedro framework**. Data loading from bigquery table, then some preprocessing, model training, evaluation, picking up best model for each attribute for each rule-type and forecasting. 
 
 3. **Real time model training** – Model is always trained with data up to recent date and recent data pattern will be reflected in forecasting.Because of this there is less chance the model to be obsolete, model is always up to date.  
 
-4. **Parallel processing** – we code for parallel processing using **joblib library, Paralleland delayed method**. For each rule type 4s models for metrics (Call Volume, AHT, OCC, SHR)will be trained in parallel. Now for each rule type training is done parallelly. So, total 5 call type there, for each call type, 4 attributes there.Total 20 model being trained in parallel. 
+4. **Parallel processing** – we code for parallel processing using **joblib library, Parallel and delayed method**. For each rule type 4s models for metrics (Call Volume, AHT, OCC, SHR)will be trained in parallel. Now for each rule type training is done parallelly. So, total 5 call type there, for each call type, 4 attributes there.Total 20 models being trained in parallel to forecast. 
