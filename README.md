@@ -1,6 +1,6 @@
 # Forecast-Demand-and-Supply
 
-## Objective –
+### Objective –
 Develop an AI system that will predict required manpower in support call center for future at monthly, daily & intraday level by TimeSeries forecasting of Demand and supply. 
 
 * Demand - Call volume
@@ -8,12 +8,12 @@ Develop an AI system that will predict required manpower in support call center 
 * Calculated metric – Head count of support agent, SLA (Service Level Agreement)
 There are 5 different types of call, so time series forecasting for each 5 groups for each attribute (call volume, AHT, OCC, SHR) individually are done.  
 
-## Impact -
+### Impact -
 * This helps call centre management take decision to employe nough human resource to handle all call efficiently with very less waiting time for customer. This will improve customer experience.
 * It helps to cut the extra man resource that is not required as per the forecasted count of call volume. So, cost saving can be achieved. 
 * By implementing this project, average **NPS** improved improved to **87** (earlier was at **69**) and **18% reduction in expenditure** on human resource per quarter.
 
-## Steps -
+### Steps -
 
 1. Load data from multiple BigQuery tables running a file containing aggregated sql query to join them.
 2. Perform EDA from various business perspective and performed data pre-processing like missing value handling,outlier handling. 
@@ -29,7 +29,7 @@ There are 5 different types of call, so time series forecasting for each 5 group
 ![image](https://github.com/KrishnenduGhorui/Forecast-Demand-and-Supply/assets/77465776/fccf8107-6a92-4bc4-9a0e-a6ea9607666c)
 
 
-## Term & definition - 
+### Term & definition - 
 * AHT (Average Handling Time) – On average how much time a single support agent takes to handle a call. 
 * OCC (Occupancy) - % of support agent available inwork out of whole support agent count.
 
@@ -59,7 +59,7 @@ Daily – future 60 days out
 Intraday – each 30 mins interval in a day , future 60 days out   
 
 
-## Some special feature of this project are as below –  
+### Some special feature of this project are as below –  
 
 1. **Parameterised code** –  Yaml file is used to parameterised whole code, so that we can control the processing from outside and lessen the hardcoding. Like the table name where forecasting output, other intermediate metrics are stored ,combination of parameters of algorithm , forecasting period , train, test data split ratio. All these are parameter are changeable just from the yaml file.  
 
