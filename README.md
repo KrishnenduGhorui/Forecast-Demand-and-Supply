@@ -12,9 +12,9 @@ Develop an AI system that will predict required manpower in support call center 
 * This helps call centre management take decision to employe nough human resource to handle all call efficiently with very less waiting time for customer. This will improve customer experience.
 * It helps to cut the extra man resource that is not required as per the forecasted count of call volume. So, cost saving can be achieved. 
 * By implementing this project, in overall call support team,
-   * average **NPS** improved improved to **87** from **69**
+   * Average **NPS** improved improved to **87** from **69**
    * **18% reduction in expenditure** on human resource per quarter
-   * **21%** reduction in escalation to senior superviser due to long waiting time.
+   * **21% reduction** in escalation to senior superviser due to long waiting time.
 
 ### Steps -
 
