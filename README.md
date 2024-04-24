@@ -23,10 +23,10 @@ Develop an AI system that will predict required manpower in support call center 
 3. Perform hyper parameter tuning and trained model algorithm like **FBProphet, SARIMA, ETS, Triple ExponentialSmoothing,LSTM, Stacking** with training data.
 4. Evaluate performance of each model algorithm with validation data based on validation metric **MAPE** and pickup best model and corresponding best parameters value for each attribute ineach call type. Average model **accuracy** is **88%**. 
 5. Train again the selected best model with whole available data (train + validation data) with corresponding bestpicked parameters value and use that model for future forecasting. 
-6. 
-  * Develop a pipeline to automate whole process (step 1-5, except EDA part) by Kedro framework on GCP Domino platform,
-  * Make processing paralyzed for each call type & each metricto reduce run time
-  * Make whole code parameterized using yaml file and deployed on Google cloud platform.
+6. Added below mentioned mechanism -
+  * Develop a pipeline to automate whole process (step 1-5, except EDA part) by **Kedro framework** on **GCP Domino platform**
+  * Make **processing paralyzed** for each call type & each metric to reduce run time using **Joblib library's Parallel,Delayed method**.
+  * Make whole code parameterized using **yaml file** and deployed on **Google cloud platform**.
 
 
 ![image](https://github.com/KrishnenduGhorui/Forecast-Demand-and-Supply/assets/77465776/fccf8107-6a92-4bc4-9a0e-a6ea9607666c)
