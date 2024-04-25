@@ -82,4 +82,8 @@ Intraday – each 30 mins interval in a day , future 60 days out   
 ![image](https://github.com/KrishnenduGhorui/Forecast-Demand-and-Supply/assets/77465776/52229063-082f-477d-ae48-fb61f70020c8)
 ![image](https://github.com/KrishnenduGhorui/Forecast-Demand-and-Supply/assets/77465776/145e44d7-a9c5-44ab-92ad-a172ab7d2bf8)
 ![image](https://github.com/KrishnenduGhorui/Forecast-Demand-and-Supply/assets/77465776/b68c7755-a821-4003-bca0-5ae2f017bd8a)
+![image](https://github.com/KrishnenduGhorui/Forecast-Demand-and-Supply/assets/77465776/9d1003b5-e207-4b3d-a0ec-75665db7dfa7)
+![image](https://github.com/KrishnenduGhorui/Forecast-Demand-and-Supply/assets/77465776/7ff1668a-d7e7-4b5c-99ce-f55dc71aca7c)
+
+
 
