@@ -1,16 +1,16 @@
 ﻿Model algorithm explored– 
 
-*       FBProphet
+* FBProphet
 
-*      Sarimax
+* Sarimax
 
-*       ETS 
+* ETS 
 
-*       TES (Triple Exponential smoothing), DES (Double Exponential smoothing)
+* TES (Triple Exponential smoothing), DES (Double Exponential smoothing)
 
-*       Stacking 
+* Stacking 
 
-*       Regression 
+* Regression 
 
 
 
