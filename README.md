@@ -56,7 +56,7 @@ Develop an AI system that will predict required manpower in support call center 
   * Forecasting at daily level
   * Forecasting at intraday(30 mins interval in whole day) level 
 
-![image](https://github.com/KrishnenduGhorui/Forecast-Demand-and-Supply/assets/77465776/83bbecd4-97fc-4964-93a5-7d41a7e40a7e)
+![image](https://github.com/KrishnenduGhorui/Forecast-Demand-and-Supply/assets/77465776/f3cf2b8c-5b57-4f05-8a6f-8430a1f2f021)
 
 There are 5 different types of call, so time series forecasting for each 5 groups for each attribute (call volume, AHT, OCC, SHR) individually are done. 
 So, total 5*4=20 models there to forecast. 
