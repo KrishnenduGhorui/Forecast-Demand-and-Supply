@@ -1,16 +1,23 @@
 ﻿**Model performance evaluation** - 
 
-Then did evaluation of model performance for validation period data. 
+ Evaluation metrics  - MAPE(Mean Absolute Percentage Error). 
 
-And evaluation is done based on evaluation metrics MAPE. So, MAPE we used because like if MAPE value 10% , then it means 10% deviation is there from actual. 
+ Reseaon to use MAPE as evaluation metrics - 
 
-And here we evaluating for various attributes. Like volume for call\_type1, call\_type2, call\_type3..
+   * MAPE directly provides idea about how good/bad model is.  
+     if MAPE value 10% , then it means 10% deviation is there between actual and forecast, means 10% error there in 
+     forecasting.
+   * MAPE is useful for being compared multiple model trained in difference scale (range) of data 
 
-So, I need to get for volume of call\_type1 which model is best, similarly volume for call\_type2 which model is best, similar way for other call\_type. Now, here scale/range of volume of various call\_type is different. For example , call type, monthly volume in 30-40 lac range .for call\_type\_2 3-4 lac  , call\_type\_3 in 30-40 thousand. 
+
+
+And here we evaluating for various attributes. Like volume for call_type1, call_type2, call_type3..
+
+So, I need to get for volume of call_type1 which model is best, similarly volume for call_type2 which model is best, similar way for other call_type. Now, here scale/range of volume of various call_type is different. For example , call_type_1, monthly volume in 30-40 lac range .for call_type_2 3-4 lac  , call_type_3 in 30-40 thousand. 
 
 So, if we used mse or mae or rmse , then I couldn’t get idea about how much the model good is with respect to other rule type. 
 
-In this case I can get idea like for example for rule\_type 1, MAPE is 0.18 , so 18% deviation there, for rule type\_2 volume MAPE is 16% , so overally both are of same performance. 
+In this case I can get idea like for example for rule_type 1, MAPE is 0.18 , so 18% deviation there, for rule type_2 volume MAPE is 16% , so overally both are of same performance. 
 
 If used mase/mae/rmse then we get metric value in different range as data value volume is in different range . 
 
