@@ -15,6 +15,7 @@
  * Base models - FBProphet, Sarimax, LSTM, ETS
 
  Predicting features / attribute in stacking XGBoost model – 
+ 
      * prediction of model FBProphet, Sarimax, LSTM, ETS
      * lag_1, lag_2, lag_3,...,lag_6,
      * lag_7, lag_14 (for daily only, seasonality releted)
@@ -35,7 +36,7 @@ Filled missing value created due to taking lag, by lag value of same year. For e
    Predicting variable/attributes are  –  
    
       * lag_1(last month value)
-      * lag_2(2<sup>nd</sup> last month value)
+      * lag_2(2nd last month value)
       * lag_3(3rd last month value)
       * average of last 3 month value
       * value of same month of last year 
