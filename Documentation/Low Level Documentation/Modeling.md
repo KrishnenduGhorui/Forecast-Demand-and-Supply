@@ -9,43 +9,30 @@
    * Regression based approach - Random Forest
    * LSTM
 
+**Stacking** – 
+
+ * Meta model - XGBoost regressor  
+ * Base models - FBProphet, Sarimax, LSTM, ETS
+
+Predicting features / attribute in stacking XGBoost model – 
+   * prediction of model FBProphet, Sarimax, LSTM, ETS
+   * lag_1, lag_2, lag_3,...,lag_6,
+   * lag_7, lag_14 (for daily only)
+   * moving average (window 3 i.e mean of lag1, lag2, lag3)
 
 
-Stacking – 
-
-XGBoost regression is used as model algorithm.
-
-Take prediction of all other model as attributes.
-
-Predicting features – 
-
-·       lag\_1, lag\_2, lag\_3…, lag\_6,
-
-·       moving average (window 3 i.e mean of lag1, lag2, lag3)
-
-·       prediction of other model (ETS, TES, sarimax)             
-
-
-
-Now, here in stacking , used XGBoost regression as forecasting model . And attributes are forecasting of model sarimax, fbprophet, ets and lag1,lag2,lag3,lag4,lag5,lag6. This is for daily. 
-
+Daily - 
 From PACF plot of those Time Series, have seen upto 6 lag significant correlation is there. 
 
 And for seasonality lag 7, lag14 also taken as attributes. As for daily data, weekly seasonality is there.
 
-Taking lag7 ,lag14 make sense . 
+Taking lag7 ,lag14 as attribute make sense. because for example the volume on today suppose Monday is mostly similar to Monday of last week. So, most dependency there on that day. 
 
-for example the volume on today suppose Monday is mostly similar to Monday of last week. So, most dependency there on that day. 
-
-
-
-filled missing value created due to taking lag, by lag value of same year. For example data there from 2019 Jan, for due to taking lag , lag1 value for 2019, jan should be 2018 ,Dec, but no data there, so lag1 value is 2019 December. 
+Filled missing value created due to taking lag, by lag value of same year. For example data there from 2019 Jan, for due to taking lag , lag1 value for 2019, jan should be 2018 ,Dec, but no data there, so lag1 value is 2019 December. 
 
 
 
-
-
-**Regression** based (XGBoost)– 
+**Regression based forecasting approach (XGBoost & Random Forest regressor)**– 
 
 Predicting variable/attributes are  – 
 
@@ -67,13 +54,11 @@ Predicting variable/attributes are  –
 
 **Hyper parameter Tuning** - 
 
-
-
 Grid SearchCV/ randomsearchcv doesn’t support ETS, TES,FBProphet model for hyper parameter tuning. 
 
 So, to tune these models , manually model to be running on iteration using for loop on various parameters combination and select best parameters. 
 
 And to tune sarima, autoarima is used.
 
-Stacking , XGBoost is supported by GridSearchCV. So, tuning done through GridSerchCV. 
+On Stacking , XGBoost is supported by GridSearchCV. So, tuning done through GridSerchCV. 
 
