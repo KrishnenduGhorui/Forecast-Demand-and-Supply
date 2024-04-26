@@ -54,7 +54,7 @@ Develop an AI system that will predict required manpower in support call center 
 
   * Forecasting at monthly level
   * Forecasting at daily level
-  * Forecasting at intraday(30 mins interval in whole day) level 
+  * Forecasting at intraday (30 mins interval in whole day) level 
 
 ![image](https://github.com/KrishnenduGhorui/Forecast-Demand-and-Supply/assets/77465776/f3cf2b8c-5b57-4f05-8a6f-8430a1f2f021)
 
@@ -80,6 +80,10 @@ Intraday – each 30 mins interval in a day , future 60 days out   
 3. **Real time model training** – Model is always trained with data up to recent date and recent data pattern will be reflected in forecasting.Because of this there is less chance the model to be obsolete, model is always up to date.  
 
 4. **Parallel processing** – we code for parallel processing using **joblib library, Parallel and delayed method**. For each rule type 4s models for metrics (Call Volume, AHT, OCC, SHR)will be trained in parallel. Now for each rule type training is done parallelly. So, total 5 call type there, for each call type, 4 attributes there.Total 20 models being trained in parallel to forecast. 
+
+## Command to run pipeline - 
+
+    kedro run --pipeline=pipeline_name 
 
 
 ## Tool & Technologies used - 
