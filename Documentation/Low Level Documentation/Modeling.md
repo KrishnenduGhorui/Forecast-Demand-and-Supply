@@ -32,11 +32,12 @@ Filled missing value created due to taking lag, by lag value of same year. For e
 
 **Regression based forecasting approach (XGBoost & Random Forest regressor)**– 
 
-   Predicting variable/attributes are  –   
-      * lag_1(last month value), 
-      * lag_2(2<sup>nd</sup> last month value),
-      * lag_3(3rd last month value),
-      * average of last 3 month value,
+   Predicting variable/attributes are  –  
+   
+      * lag_1(last month value)
+      * lag_2(2<sup>nd</sup> last month value)
+      * lag_3(3rd last month value)
+      * average of last 3 month value
       * value of same month of last year 
       * value of same month of 2<sup>nd</sup> last year 
 
