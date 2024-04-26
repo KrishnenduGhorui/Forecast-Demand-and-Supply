@@ -20,7 +20,7 @@ Develop an AI system that will predict required manpower in support call center 
 
 1. Load data from multiple BigQuery tables running a file containing aggregated sql query to join them.
 2. Perform EDA from various business perspective and performed data pre-processing like missing value handling,outlier handling. 
-3. Perform hyper parameter tuning and trained model algorithm like **FBProphet, SARIMA, ETS, Triple ExponentialSmoothing,LSTM, Stacking (XGBoost)** with training data.
+3. Perform hyper parameter tuning and trained model algorithm like **FBProphet, SARIMA, ETS, Triple ExponentialSmoothing,LSTM, Stacking (XGBoost/Random Forest)** with training data.
 4. Evaluate performance of each model algorithm with validation data based on validation metric **MAPE** and pickup best model and corresponding best parameters value for each attribute ineach call type. Average model **accuracy** is **88%**. 
 5. Train again the selected best model with whole available data (train + validation data) with corresponding bestpicked parameters value and use that model for future forecasting. 
 6. Added below mentioned mechanism -
