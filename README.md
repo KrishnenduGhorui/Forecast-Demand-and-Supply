@@ -77,7 +77,7 @@ Intraday – each 30 mins interval in a day , future 60 days out   
 4. **Parallel processing** – we code for parallel processing using **joblib library, Parallel and delayed method**. For each rule type 4s models for metrics (Call Volume, AHT, OCC, SHR)will be trained in parallel. Now for each rule type training is done parallelly. So, total 5 call type there, for each call type, 4 attributes there.Total 20 models being trained in parallel to forecast. 
 
 
-**Tool & Technologies used** - 
+## Tool & Technologies used - 
 
 ![image](https://github.com/KrishnenduGhorui/Forecast-Demand-and-Supply/assets/77465776/52229063-082f-477d-ae48-fb61f70020c8)
 ![image](https://github.com/KrishnenduGhorui/Forecast-Demand-and-Supply/assets/77465776/145e44d7-a9c5-44ab-92ad-a172ab7d2bf8)
