@@ -85,6 +85,12 @@ Intraday – each 30 mins interval in a day , future 60 days out   
 
     kedro run --pipeline=pipeline_name 
 
+ Example - 
+
+    kedro run --pipeline=monthly_pipeline
+    kedro run --pipeline=daily_pipeline
+    kedro run --pipeline=daily_intraday_pipeline
+    kedro run --pipeline=complete_pipeline
 
 ## Tool & Technologies used - 
 
