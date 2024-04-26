@@ -21,10 +21,10 @@
      * moving average (window 3 i.e mean of lag1, lag2, lag3)
 
 
-Daily - 
+
 From PACF plot of those Time Series, have seen upto 6 lag significant correlation is there. 
 
-And for seasonality lag 7, lag14 also taken as attributes. As for daily data, weekly seasonality is there.
+And for seasonality lag 7, lag14 also taken as attributes for daily. As for daily data, weekly seasonality is there.
 
 Taking lag7 ,lag14 as attribute make sense. because for example the volume on today suppose Monday is mostly similar to Monday of last week. So, most dependency there on that day. 
 
@@ -34,31 +34,23 @@ Filled missing value created due to taking lag, by lag value of same year. For e
 
 **Regression based forecasting approach (XGBoost & Random Forest regressor)**– 
 
-  Predicting variable/attributes are  – 
-
-    * lag\_1(last month value), 
-
-    * lag\_2(2<sup>nd</sup> last month value),
-
-    * lag\_3(3rd last month value),
-
-    * average of last 3 month value,
-
-    * value of same month of last year 
-
-    * value of same month of 2<sup>nd</sup> last year 
-
-
-
-
+    Predicting variable/attributes are  – 
+  
+      * lag\_1(last month value), 
+      * lag\_2(2<sup>nd</sup> last month value),
+      * lag\_3(3rd last month value),
+      * average of last 3 month value,
+      * value of same month of last year 
+      * value of same month of 2<sup>nd</sup> last year 
 
 **Hyper parameter Tuning** - 
 
-Grid SearchCV/ randomsearchcv doesn’t support ETS, TES,FBProphet model for hyper parameter tuning. 
+   Grid SearchCV/ randomsearchcv doesn’t support ETS, TES,FBProphet model for hyper parameter tuning. 
+   
+   So, to tune these models , manually model to be running on iteration using for loop on various parameters combination and 
+   select best parameters. 
+   
+   And to tune sarima, autoarima is used.
 
-So, to tune these models , manually model to be running on iteration using for loop on various parameters combination and select best parameters. 
-
-And to tune sarima, autoarima is used.
-
-On Stacking , XGBoost is supported by GridSearchCV. So, tuning done through GridSerchCV. 
+   On Stacking , XGBoost is supported by GridSearchCV. So, tuning done through GridSerchCV. 
 
