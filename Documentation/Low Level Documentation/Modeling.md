@@ -17,7 +17,7 @@
 Predicting features / attribute in stacking XGBoost model – 
    * prediction of model FBProphet, Sarimax, LSTM, ETS
    * lag_1, lag_2, lag_3,...,lag_6,
-   * lag_7, lag_14 (for daily only)
+   * lag_7, lag_14 (for daily only, seasonality releted)
    * moving average (window 3 i.e mean of lag1, lag2, lag3)
 
 
