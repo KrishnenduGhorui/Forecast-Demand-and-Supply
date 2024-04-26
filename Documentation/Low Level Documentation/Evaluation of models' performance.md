@@ -2,8 +2,8 @@
 
  Evaluation metrics  - 
  
-    * MAPE(Mean Absolute Percentage Error) for daily and monthly forecasting  
-    * R2_score/adjusted R2_score/rmse for intraday 
+   * MAPE(Mean Absolute Percentage Error) for daily and monthly forecasting  
+   * R2_score/adjusted R2_score/rmse for intraday 
 
  Reseaon to use MAPE as evaluation metrics - 
 
