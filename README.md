@@ -50,6 +50,11 @@ Develop an AI system that will predict required manpower in support call center 
               
                  HC intraday = (Call Volume * AHT)/3600/OCC/(1-SHR)/Days in Month
 
+## Forecasting frequency 
+
+  * Forecasting at monthly level
+  * Forecasting at daily level
+  * Forecasting at intraday(30 mins interval in whole day) level 
 
 ![image](https://github.com/KrishnenduGhorui/Forecast-Demand-and-Supply/assets/77465776/83bbecd4-97fc-4964-93a5-7d41a7e40a7e)
 
