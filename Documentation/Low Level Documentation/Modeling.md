@@ -1,16 +1,13 @@
-﻿Model algorithm explored– 
 
-* FBProphet
+ Model algorithm explored for Time Series forecasting – 
 
-* Sarimax
-
-* ETS 
-
-* TES (Triple Exponential smoothing), DES (Double Exponential smoothing)
-
-* Stacking 
-
-* Regression 
+   * FBProphet
+   * Sarimax  
+   * ETS 
+   * TES (Triple Exponential smoothing), DES (Double Exponential smoothing)
+   * Stacking (XGBoost)
+   * Regression based approach - Random Forest
+   * LSTM
 
 
 
