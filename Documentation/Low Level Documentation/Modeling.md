@@ -14,13 +14,11 @@
  * Meta model - XGBoost regressor  
  * Base models - FBProphet, Sarimax, LSTM, ETS
 
-   Predicting features / attribute in stacking XGBoost model – 
+ Predicting features / attribute in stacking XGBoost model – 
      * prediction of model FBProphet, Sarimax, LSTM, ETS
      * lag_1, lag_2, lag_3,...,lag_6,
      * lag_7, lag_14 (for daily only, seasonality releted)
      * moving average (window 3 i.e mean of lag1, lag2, lag3)
-
-
 
 From PACF plot of those Time Series, have seen upto 6 lag significant correlation is there. 
 
@@ -34,11 +32,10 @@ Filled missing value created due to taking lag, by lag value of same year. For e
 
 **Regression based forecasting approach (XGBoost & Random Forest regressor)**– 
 
-    Predicting variable/attributes are  – 
-  
-      * lag\_1(last month value), 
-      * lag\_2(2<sup>nd</sup> last month value),
-      * lag\_3(3rd last month value),
+   Predicting variable/attributes are  –   
+      * lag_1(last month value), 
+      * lag_2(2<sup>nd</sup> last month value),
+      * lag_3(3rd last month value),
       * average of last 3 month value,
       * value of same month of last year 
       * value of same month of 2<sup>nd</sup> last year 
