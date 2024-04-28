@@ -8,7 +8,7 @@ Develop an AI system that will predict required manpower in support call center 
   * Head count of support agent
   * AHT (Average Handling Time),
   * OCC (Occupancy),
-  * SHR(Shrinkage)
+  * SHR (Shrinkage)
 * Calculated metric – SLA (Service Level Agreement)
   
 
