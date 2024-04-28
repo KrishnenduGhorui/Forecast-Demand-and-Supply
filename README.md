@@ -4,8 +4,11 @@
 Develop an AI system that will predict required manpower in support call center for future at monthly, daily & intraday level by TimeSeries forecasting of Demand and supply. 
 
 * Demand - Call volume
-* Supply – AHT (Average Handling Time), OCC (Occupancy), SHR(Shrinkage)
-* Calculated metric – Head count of support agent, SLA (Service Level Agreement)
+* Supply – Head count of support agent
+         - AHT (Average Handling Time),
+         - OCC (Occupancy),
+         - SHR(Shrinkage)
+* Calculated metric – SLA (Service Level Agreement)
   
 
 ## Impact -
