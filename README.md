@@ -22,7 +22,7 @@ Develop an AI system that will predict required manpower in support call center 
 
 ## Steps -
 
-1. Load data from multiple BigQuery tables running a file containing aggregated sql query to join them.
+1. Load data from multiple **BigQuery** tables running a file containing aggregated sql query to join them.
 2. Perform EDA from various business perspective
 3. Checked **forecastability** using **PACF plot** and **Ljung Box hypothesis test** and performed data pre-processing like missing value handling,outlier handling. 
 4. Perform hyper parameter tuning and trained model algorithm like **FBProphet, SARIMA, ETS, Triple ExponentialSmoothing,LSTM, Stacking (XGBoost), XGBoost Regressor/Random Forest Regressor** with training data.
@@ -30,7 +30,7 @@ Develop an AI system that will predict required manpower in support call center 
 6. Train again the selected best model with whole available data (train + validation data) with corresponding best picked parameters value and use that model for future forecasting. 
 7. Added below mentioned mechanism -
     * Develop a pipeline to automate whole process (step 1-5, except EDA part) by **Kedro framework** on **GCP Domino platform**
-    * Make **processing paralyzed** for each call type & each metric to reduce run time using **Joblib library's Parallel,delayed method**.
+    * Make **processing in parallel** for each call type & each metric **to reduce run time (from 1.5 hours to 20 minutes)** using **Joblib library's Parallel,delayed method**.
     * Make whole code parameterized using **yaml file** and deployed on **Google cloud platform**.
 
 
