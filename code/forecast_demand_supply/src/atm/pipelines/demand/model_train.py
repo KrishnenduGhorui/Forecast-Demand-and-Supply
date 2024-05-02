@@ -213,18 +213,52 @@ def prep data stack(level,forecast_input,selected_rule_type, best_models,train_s
     sarima_pred_last_3_avg-sarima_pred_stack.rolling (window=3).mean().shift(1)
     for w in range(m) :
         sarima_pred_last_3_avg.iloc[w, ]=sarima_pred_stack.iloc[w, ][0]
+      
     prophet_pred_last_3_avg=prophet_pred stack.rolling(windoW=3).mean().shift(1)
     # FiLLing missing value created.due to roliing and shifting to get avg tes prediction for last 3 months
-    m3
-    for w in range(m):
-
-
-
-   
+    m=3
+    for w in range(m):      
+      prophet_pred_last3_avg.iloc[w, ]=prophet_pred_stack.iloc [w, ][0]
+      
+    # Merging 6 Lags data, moving average data, ets prediction and sarima prediction
+    data_df_stack=data_df_stack.merge(ets_pred_last_3_avg,left_index=True,right_index=True).merge(sarima_pred_last_3_avg,left_index=True,right_index=True).merge(prophet_pred_last3_avg,left_indexe=True,right_index=True)
     
+    # Splitting data into train and test data
+    traindf_stack=data_df_stack[ :train_end_date]
+    test_df_stack=data_df_stack[test_start_date:]
+      
+    cols_stack_x=cols_lag+[ 'ma_3', 'ets_prediction','sarima_prediction','prophet_prediction']
+    x_train_stack=train_df_stack[cols_stack_x]
+    y_train_stack=train_df_stack['value']
+      
+    x_test_stack=test_df_stack[cols_stack_x]
+    y_test_stack=test_df_stack['value']
+      
+    stack_dict[selected_rule_type] ['x_train_stack' ]=x_train_stack
+    stack dict[selected_rule_type]['y_train_stack']=y_train_stack
+    stack_dict[selected_rule_type]['x_test_stàck']=x_test_stack
+    stack_dict[selected_rule_type]['y_test_stack']=y_test_stack
+      
+    return stack_dict
+      
+#Defining method to train and tune stacking (XG8)
+def tune_model_stack (level, forecast_input, selected_rule_type, best_models, train_start_date,train_end_date,test_start_date,test_end_date,num_lags,params_stack):
+'''
+Performing hyper parameter tuning of stacking modeling
+Input : x_train,y-train,x_ test,y_test, parameters
+Output : best stack model best parmeters conbination
+'''
 
-
-
-
-
+    
+    
+    
+    
+    
+       
+        
+    
+    
+    
+    
+    
 
