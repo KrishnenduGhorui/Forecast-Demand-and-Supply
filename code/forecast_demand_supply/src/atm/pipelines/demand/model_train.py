@@ -243,11 +243,44 @@ def prep data stack(level,forecast_input,selected_rule_type, best_models,train_s
       
 #Defining method to train and tune stacking (XG8)
 def tune_model_stack (level, forecast_input, selected_rule_type, best_models, train_start_date,train_end_date,test_start_date,test_end_date,num_lags,params_stack):
-'''
-Performing hyper parameter tuning of stacking modeling
-Input : x_train,y-train,x_ test,y_test, parameters
-Output : best stack model best parmeters conbination
-'''
+    '''
+    Performing hyper parameter tuning of stacking modeling
+    Input : x_train,y-train,x_ test,y_test, parameters
+    Output : best stack model best parmeters conbination
+    '''
+    
+    stack_dict=prep_data_stack(level, forecast_input, selected_rule_type, best_models,train_start_date,train_end_date,test_start_date,test_end_date,num_lags)
+    x_train=stack_dict[selected_rule_type]['x_train_stack']
+    y_train=stack_dict[selected_rule_type ]['y_train_stack']
+    x_test=stack_dict[selected_rule_type]['x_test_stack']
+    y_test-stack_dict[selected_rule_type]['y_test_stack']
+  
+    model_xgb_sample-XGBRegressor()
+    grid_search_stack-GridSearchCV(estimatormodel_xgb_sample, param_grid=params_stack, cv=2,n_jobs=-1)
+    grid_search_stack.fit(x_train,y_train)
+    best_params_stack=grid_search_stack.best_params_
+    best_model_stack=grid_search_stack.best_estimator_
+  
+    return selected_rule_type, best_model_stack, best_params_stack,x_train,y_train,x_test,y_test
+  
+def get_mape_stack (model_stack, x_test,y_test) :
+y_predamodel_stack.predict (x_test)
+pred)
+mape_stack=mean_absolute_percentage_error (y_test,y
+return mape_stack
+def train_model_ets(data , params) :
+Train the ETS model
+This function is used to retrain the model with whole available data
+Arguments :
+Data (Dataframe) - whole avilable data
+parmametrs - best parameters
+Output : ETS Model trained on whole available data with
+data['value' ]=data[' value' ].astype ( float)
+model ets-ETSModel (data['value' ],
+trend-params[trend],
+Seasonal=params ['seasonal'],
+
+
 
     
     
