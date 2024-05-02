@@ -182,7 +182,7 @@ def prep data stack(level,forecast_input,selected_rule_type, best_models,train_s
             if(level=='monthly"):
                 new_index_lag=index-pd.DateOffset(months(i+n+1)+ pd.date0ffset(months=12)
             elif(level=='daily'):
-            new_index_lag= index - pd.DateOffset(days=(i+n1) +pd.DateOffset (months=12)
+            new_index_lag= index - pd.DateOffset(days=(i+n+1) +pd.DateOffset(months=12)
             data_df_stack.loc[index,col]=data_df_stack.loc[new_index_lag,'value']
     
 
