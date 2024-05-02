@@ -264,21 +264,24 @@ def tune_model_stack (level, forecast_input, selected_rule_type, best_models, tr
     return selected_rule_type, best_model_stack, best_params_stack,x_train,y_train,x_test,y_test
   
 def get_mape_stack (model_stack, x_test,y_test) :
-y_predamodel_stack.predict (x_test)
-pred)
-mape_stack=mean_absolute_percentage_error (y_test,y
-return mape_stack
+    y_pred=model_stack.predict(x_test)
+    mape_stack=mean_absolute_percentage_error(y_test,y_pred)
+    return mape_stack
+  
 def train_model_ets(data , params) :
-Train the ETS model
-This function is used to retrain the model with whole available data
-Arguments :
-Data (Dataframe) - whole avilable data
-parmametrs - best parameters
-Output : ETS Model trained on whole available data with
-data['value' ]=data[' value' ].astype ( float)
-model ets-ETSModel (data['value' ],
-trend-params[trend],
-Seasonal=params ['seasonal'],
+    '''
+    Train the ETS model
+    This function is used to retrain the model with whole available data
+    Arguments :
+    Data (Dataframe) - whole avilable data
+    parmametrs - best parameters
+    Output : ETS Model trained on whole available data with
+    '''
+    data['value']=data[' value' ].astype ( float)
+    model_ets=ETSModel(data['value'],
+                      trend=params['trend'],
+                      Seasonal=params['seasonal'],
+                      
 
 
 
