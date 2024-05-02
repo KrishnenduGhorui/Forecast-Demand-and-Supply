@@ -184,6 +184,43 @@ def prep data stack(level,forecast_input,selected_rule_type, best_models,train_s
             elif(level=='daily'):
             new_index_lag= index - pd.DateOffset(days=(i+n+1) +pd.DateOffset(months=12)
             data_df_stack.loc[index,col]=data_df_stack.loc[new_index_lag,'value']
+
+    # Taking moving average window 3 (Last 3 months data) as an attribute
+    data_df_stack['ma_3']=(data_df_stack['lag_1']+data_df_stack['lag2']+data_df_stack['lag3'])/3
+
+    # Taking ETS and sarima model prediction as attribute
+
+    ets_pred_stack=my_dict['ETS'].predict(start=train_start_date, end=test_end_date)
+    sarima_pred_stack=my_dict["SARIMA"].predict(start train start_date, end=test_end d
+    prophet_pred_stackmy_dict['PROPHET'].predict(pd. DataFrame(pd.date_range(start=train_start_date,end=test_end_date),columns=['ds']))[['ds','yhat']]
+    prophet_pred_stack.set_index('ds',inplace-True)
+
+    ets_pred_stack=pd.Dataframe(ets pred stack)
+    ets_pred_stack.columns=['ets_prediction']
+
+    sarima_pred_stack=pd.Dataframe(sarima pred stack)
+    sarima_pred_stack. columns=['sarima_ prediction']
+
+    prophet_pred_stack=pd.Dataframe(prophet_pred_stack)
+    prophet_pred_stack.columns=['prophet_prediction']
+
+    ets_pred_last_3_avg-ets_pred_stack.rolling (window=3).mean().shift(1)
+    # FilLing missing value created due to roLLing and shifting to get avg ets prediction for last 3 months
+    m=3
+    for w in range(m) :
+        ets_pred_last_3_avg.iloc[w, ]=ets_pred_stack.iloc[w, ][0]
+    # FiLLing missing value created due to rolling and shifting to get avg samima prediction for last 3 months
+    sarima_pred_last_3_avg-sarima_pred_stack.rolling (window=3).mean().shift(1)
+    for w in range(m) :
+        sarima_pred_last_3_avg.iloc[w, ]=sarima_pred_stack.iloc[w, ][0]
+    prophet_pred_last_3_avg=prophet_pred stack.rolling(windoW=3).mean().shift(1)
+    # FiLLing missing value created.due to roliing and shifting to get avg tes prediction for last 3 months
+    m3
+    for w in range(m):
+
+
+
+   
     
 
 
