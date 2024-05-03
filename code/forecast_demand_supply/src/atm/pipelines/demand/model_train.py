@@ -290,20 +290,103 @@ def train_model_ets(data , params) :
     return fitted_model_ets
       
 def train_model_sarinax(data,params):
-'''
-Train the SARIMAX model
-This function is used to retrain the model with shole available data
-Arguments :
-            Data (Dataframe) - whole avilable data
-            parmametrs - best parameters
-Output : SARIMAX Model trained on whole available data with
-'''
-model_sarima =SARIMAX(data['value'],
-                      order=params['order'],
-                      seasonal_order=params['seasonal_order'])
-with suppress_stdout_stderr():
-    fitted model_sarima=model_sarima.fit()
-return fitted_model_sarima
+    '''
+    Train the SARIMAX model
+    This function is used to retrain the model with shole available data
+    Arguments :
+                Data (Dataframe) - whole avilable data
+                parmametrs - best parameters
+    Output : SARIMAX Model trained on whole available data with
+    '''
+    model_sarima =SARIMAX(data['value'],
+                          order=params['order'],
+                          seasonal_order=params['seasonal_order'])
+    with suppress_stdout_stderr():
+        fitted model_sarima=model_sarima.fit()
+    return fitted_model_sarima
+
+
+def train_model_tes (data, params):
+  '''
+    Train the Triple Exp Smoothing model
+    Thỉs function is used to retrain the model with whole available data
+    Arguments :
+    Data (Dataframe) - whole avil able data
+    parmametrs - best pan ametems
+    '''
+    model_tes=ExponentialSmoothing(data['value'],
+                                    trend=params['trend'],
+                                    seasonal=panams['seasonal'],
+                                    seasonal_periods=params['seasonal_periods']
+    with suppress_stdout_stderr():
+       fitted model_tes=model_tes.fit(smoothing_level=params['smoothing_level'],
+                                      smoothing_trend=params['smoothing_trend'])
+    return fitted_model_tes
+
+def train_model_stack(x_train,x_test,y_train,y_test, params):
+    '''
+    Train the stack model
+    This function is used to retrain the model with whole available data
+    Arguments :
+    Data (Dataframe) - whole available data , predicting data and target data
+    parmametrs- best parameters
+    '''
+    from xgboost import XGBRegresşor
+    X=pd.concat([x_train, x_test])
+    y=pd.concat( [y_train, y_test])
+    fitted_model_xgb=XGBRegressor(max_depth=params['max_depth'],
+                                  learning_rate=params['learning_rate'],
+                                  n_estimators=params['n_estimators'])
+    fitted_model_xgb.fit(x, y)
+    return fitted_model_xgb
+                                    
+def prep_data_stack_1_period (level,y_test_stack, num_lags, ets_fitted, sarima_fitted,prophet_fitted):
+    '''
+    Prepare data for stacking for future one period
+    args :
+    return :
+    data (Data frame)- predicting data (x) for one future period (month)
+    '''
+    if(level=='monthly') :
+        forecast_date=y_test_stack.index[-1]+pd.DateOffset(months=1)
+    elif (level='daily' ):
+        forecast_date=y_test_stack.index[-1]+pd.Dateoffset(days=1)
+    forecast_start_date_temp=forecast_date-pd.DateOffset(months=3)
+    forecast_end_date_temp=forecast_date- pd.DateOffset(months=1)
+  
+    data_forecast_temp=pd.DataFrame([])
+
+    # Taking 6 Lags for each month data as atrribute
+    for i in range(1, num_lags +1):
+       data_forecast_temp['lag_{}'.format(i)] =[y_test_stack[-i]]
+      
+    data_forecast_temp['ma_3']=(data_forecast_temp['lag_1']+data_forecast_temp['lag_2']+data_forecast_temp['lag3'])/3
+    # Taking average of Last 3 months forecasting of ets, sarima and tes mode'
+    data_forecast_temp['ets_prediction' ]=ets_fitted.predict(start=forecast_start_date_temp, end=forecast_end_date_temp).mean()
+    data_forecast_temp['sarima_prediction' ]=sarima_fitted.predict(start=forecast_start_date_temp, end=forecast_end_date_temp).mean()
+  
+    data_forecast_proph=prophet_fitted.predict(pd.Dataframe(pd.date_range(start=forecast_start_date_temp, end=forecast_end_đate_temp), colums=['ds']))[['ds','yhat']]
+    data_forecast_proph.set_index('ds',inplace=True)
+    data_forecast_temp['prophet_prediction']=data_forecast_proph.mean()
+  
+    return data_forecast_temp, forecast_date
+  
+def forecast_stack(level,y_train_stack,y_test_stack, num_lags,ets_fitted, sarima_fitted, prophet_fitted, fitted_model_stack, forecast_period):
+    y_stack=pd.concat([y_train_stack,y_test_stack]),
+    stack_forecasted_data-pd.Series ([])
+    for i in range(forecast period) :
+    # Prepare data for stacking for future one period
+        x_forecast_temp, forecast_date_temp=prep_data_stack_1_period (level, y_stack, num_lags,ets_fitted, sarima_fitted, prophet_fitted)
+    # forecasting by stack for future 1 period
+        y_forecast_temp=fitted_model_stack.predict(X_forecast_temp)
+        
+
+
+
+
+
+
+
 
 
                       
