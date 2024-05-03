@@ -143,19 +143,75 @@ def train_forecast_models (forecast_input,
                                          demand_model) for selected_rule in demand_rule_type)
                                                     
     for selected_rule, model_result_list in returned_list:
-        if selected rule not in best params_dict:
+        if selected_rule not in best_params_dict:
             best_params_dict[selected_rule] = ()
         best_params_dict[selected_rule] = model_result_list
     return best_params_dict
 
+def train_forecast_model_rule_type(selected_rule_type, forecast_input,train_start_date, train_end_date, test_start_date, test_end_date, params_ets,params_sarima, params_tes, params_grid_prophet,demand_model) :
+    """
+    train the model by rule type, and select the
+    best hyper parameters
+    Args:
+    selected_rule_type: selected rule type
+    forecast input (dataframe): time- series data of historical demand
+    by rule type
+    parameters (dictionary)
+    Returns:
+    selected_ruletype: selected rule type
+    best_params (dict): best hyper parameter input
+    """
+    df_temp=forecast_select_data (forecast_input, selected_rule_type)
+    model_result_list= Parallel(n_jobs=1) (
+                       delayed(fitted_model_return)(
+                        train_start_date, train_end_date, test_start_date, test_end_date, params_ets, params_sarima, params_tes, params_grid_prophet)
+              for selected_model in demand_model)
+    
+    return selected_rule_type, model_result_list
+    
+def fitted model_return(model_selected, forecast_input,train_start_date, train_end_date, test_start_date, test_end_date, params_ets,params_sarima,params_sarima,params_tes,params_grid_prophet):
+    '''
+    Perform model training , hyper parmeter tuning , provide best paramters
+    Input :
+            model name: string,
+            data : dataframe,
+            parameters : dictionary
+    Output:
+            model name, best trained model object, best paramters
+    '''
+    train_start_date=pd.to_datetime(train_start_date)
+    train_end_date=pd.to_datetime(train_end_date)
+    test_start_date=pd.to_datetime (test_start_date)
+    test_end_date=pd.to_datetime(test_end_date)
+    data_train=forecast_input.loc[ (forecast_input.index >= train_start_date) & (forecast_input.index <= train_end_date)]
+    data_test=forecast_input.loc[(forecast_input.index >= test_start_date) & (forecast_input.index <= test_end_date)]
 
-      
-    
-    
-    
-    
-    
-    
+    if model1_selected=='ETS':
+        param grid_ets-params_ets
+        best_model_ets, best params_ets=tune_model_ets (data_train, data_test, param_grid_ets)
+        return 'ETS',best_model_ets, best_ params_ets,
+        
+    elif model_selected=='SARIMAX':
+        param_grid_sarima=params_sarima
+        best_model_sarima, best_params_sarima=tune_model_sarima(data_train, data_test, param_grid_sarima)
+        return 'SARIMA', best_model_sarima, best_params_sarima
+   
+
+
+        
+        
+        
+        
+        
+        
+        
+              
+            
+            
+            
+            
+            
+            
 
 
 
