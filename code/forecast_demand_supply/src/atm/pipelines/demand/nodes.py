@@ -195,6 +195,113 @@ def fitted model_return(model_selected, forecast_input,train_start_date, train_e
         param_grid_sarima=params_sarima
         best_model_sarima, best_params_sarima=tune_model_sarima(data_train, data_test, param_grid_sarima)
         return 'SARIMA', best_model_sarima, best_params_sarima
+
+    elif model_selected=='TES' :
+        param_grid_tes=params_tes
+        best_model_tes, best_params_tes=param_tuning_tes(data_train, data_test, param_grid_tes)
+        return 'TES' ,best_model_tes, best_params_tes
+    elif model_selected=='PROPHET':
+        param_grid_prophet=params_grid_prophet
+        best_model_prophet, best_params_prophet=tune_model_prophet (data_train, data_test, param_grid_prophet)
+        return 'PROPHET',best_model_prophet, best_params prophet
+        
+def outlier_treatment (datacolúmn):
+    sorted (datacolumn)
+    Q1,Q3 = np.percentile (datacolumn , [25,75])
+    IOR = Q3- Q1
+    lower_range = Q1- (1.5 * IOR)
+    upper_range = Q3+ (1.5 IOR)
+    return lower_range, upper_range
+    
+def wmape (forecast, actual):
+    # we take two series and calculate an output a wmape from it
+    forecast=forecast.reset index)
+    actual=actual.reset_index()
+    forecast = forecast.iloc[:,1]
+    actual = actual.iloc[: ,1]
+    
+    #make a sertes called mape
+    se_mape=abs(actual-forecast) /actual
+    
+    #get a float of the sum of the actual
+    ft_actual_sum = actual.sum()
+    
+    print('se_mape',se_mape)
+    print('ft_ actual sum',ft_actual_sum)
+    
+    # get a series of the multiple of the actual & the mape
+    se_actual_prod_ mape = actual* se_mape
+    # summate the prod of the actual and the mope
+    ft_actual_prod_mape_sum = se_actual_prod_mape.sum()
+    
+    # float: wmape of forecast
+    ft_wmape_forecast = ft_actual_prod_mape_sum/ft_actual_sum
+    ft_wmape_forecast=round(ft_wmape_forecast,2)
+    
+    # return a float
+    return ft_wmape_forecast
+    
+def forecast_select_data(forecast input, selected ruletype):
+    """
+    select the forecast. input data of specific negion programgroup for forecasting model training
+    Args:
+        forecast input (dataframe) : time-series data of historical calls by ruletype/date.
+        selected region (str): selected region
+        selected_program group (str): selected program group
+    Returns:
+        df_forecast (dataframe ): tine-series data of historical calls for selected rule_type
+    """
+    df_forecast = forecast_input [forecast_input["rule_type"] == selected_rule_type]
+    lowerbound, upperbound = outlier_treatment (df_forecast.value)
+    df_forecast['value'] =np.where(df_forecast['value']>upperbound,upperbound, np.where(df_forecast['value']<lowerbound, lowerbound,df_forecast['value']))
+
+    return df_forecast
+                                                                                        
+def holdout_metrics (forecast_input, best_params_dict, returned_list,test_start_date,test_end_date, demand_mode1):
+    '''
+    Getting mape metrics value for trained models
+    Args:
+    forecast_ínput (dataframe): time-series data of historical calls
+    by rule_type / date
+    best_params dict (dictionary) :
+    Returns:
+    Dictionary with mape metrics value of all models
+    '''
+    test_start_date=pd.to_datetime(test_start_date)
+    test_end_date=pd.to_datetime(test_end_date)
+
+    model_mape_dict = collections.defaultdict(dict)
+    for key in best_params_dict:
+        df_temp = forecast_select_data(forecast_input, key)
+        df_temp=df_temp. loct (df_temp.index >= test_start_date) & (df_temp. index <= test_end_date)]
+        actual=df_temp ['value']
+        for i in range(len (demand_model)):
+            if(best_params_dict [keyj [i][O]) =='ETS':
+                forecast-best_params_dict [key ] [i] [1].forecast (actual. shape [0])
+            if(best _params_dict [key] [i][O]) ==' SARIMA' :
+                forecast-best_params_dict [key ] [i] [1].forecast (actual.shape[0])
+            if (best_params_dict [key] [iJ[O)==TES':
+                forecast-best_params_dict[key][ij[1) .forecast (actual.shape[0])
+            if(best_params_dict [key] [ij[o])=='PROPHET':
+                test_df=pd.DataFrame (df_temp.index) .rename (columns-'call answer_dt':"ds'})
+                forecast-best_params_dict [key] [i)[1).predict(test_df) ['yhat']
+            
+            mape = mean_absolute_percentage_error(forecast, actual)
+            model_mape_dict [key ] [best_params_dict [key] [ij[e]]-mape
+        for i in returned_list:
+            if (i[e]==key):
+                forecast=i[1]. prediçt(i[5] )
+                mape = mean_absolute_percentage_error(forecast, actual)
+                model_mape_dict [key]['STACK']=mape
+    return model_mape_dict
+    
+    
+    
+    
+        
+        
+
+
    
 
 
