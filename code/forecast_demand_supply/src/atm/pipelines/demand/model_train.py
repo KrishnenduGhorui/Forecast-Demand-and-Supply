@@ -530,6 +530,62 @@ def build_scenario_table_monthly(df, period_whatif) :
     df_scenerio_table=df_scene[['date',
                                 "rule_type"
                                 'volume',
+                                'rule_type',
+                                'volume',
+                                'volume_univariate_forecast',
+                                'aht',
+                                'aht_univariate_forecast',
+                                'occupancy',
+                                'occupancy_univariate_forecast',
+                                'shrinkage'
+                                'shrinkage_univariate_forecast',
+                                'calls_answered_within_30',
+                                'calls_answered_within_30_univariate_forecast ',
+                                'headcount',
+                                'headcount_univariate_ forecast',
+                                'sla',
+                                'sla_univariate_forecast',
+                                'calls_answered',
+                                'calls_answered_univariate_forecast',
+                                'number_of_days']
+    df_scenerio_table.fillna(0,inplace=True)
+    
+    return df_scenerio_table
+  
+def store_data_ba(bq_project,output_project,table_string, df) :
+    table_location=output_project+'.'+table_string
+    sql_inserts=[]
+    for _,row in df.iterrows():
+        columns=', '.join (row.index)
+        values=', '.join([f"'{val}'" if isinstance(val, str) else f"'(val.strftime($Y- %m-%d %H: %:%S))" if isinstance(val, pd.Timestamp) else str(val) for val in row.values ))
+        sql_inserts.append (f" insert into (table_location) ((columns}) values ((values}) ;")
+      
+    client =bigquery.Client(project=bą_project)
+  
+    for insert_ statement in sql_inserts:
+      query_job = client.query(insert_statement) # API request
+      rows = query_job.result()
+      
+# defining function to store data into BQ at once
+def store_ data_bq_f (bq_project, output_project, table_string, df):
+    table_location=Output_project+'.'+table_string
+    columns=', '.join([col for col in df.columns])
+    sql_query=f"""INSERT INTO {table location} ({columns}) VALUES """
+    values=),('.join([','.join( [f""{(val)i" if isinstance(val, str) else f" '{val.strftime('%Y-%m-%d %H:%M:%S')}'" if isinstance (val, pd. Timestamp) else str(val) for val in row.values]) for ,row in df.iterrows ()])
+    values="("+values+")"
+    sql_query+=values
+    client = bigquery.Client (project-bq_project)
+    #for insert_ statement in sqlinserts:
+    query_job = client.query(sq1_query) # API request
+    rows = query_job.result()
+
+# defining function to store data into BỌ in sequence in batch
+def store_data_bq_sea(bq_project, output_project, table_string, df_intra):
+
+
+
+
+
     
     
     
