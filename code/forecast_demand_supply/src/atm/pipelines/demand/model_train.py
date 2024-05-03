@@ -379,6 +379,62 @@ def forecast_stack(level,y_train_stack,y_test_stack, num_lags,ets_fitted, sarima
         x_forecast_temp, forecast_date_temp=prep_data_stack_1_period (level, y_stack, num_lags,ets_fitted, sarima_fitted, prophet_fitted)
     # forecasting by stack for future 1 period
         y_forecast_temp=fitted_model_stack.predict(X_forecast_temp)
+
+        # Setting index on forecaşting x variables and y variabLe, index in forecasting date
+        y_forecast_temp=pd.Series (y_forecasttemp, index=[forecast_date_temp])
+        y_stack=y_stack.append(y_forecast_temp)
+        stack_forecasted_data=pd.concat([stack_forecasted_data, y_forecast_temp])
+    return stack_forecasted_data
+  
+def tune_model_prophet (data_train, data_test, param_grid):
+    data_train.reset_index(inplace=True)
+    data_test.reset_index(inplace=True)
+    data_train.rename(columns={'call_answer_dt':'ds','value':'y'),inplace=True)
+    data_test.rename (columns={'call_answer_dt': 'ds','value':'y'},inplace=True)
+    #Logging. getLogger('fbprophet'). setLevel (Logging.WARNING)
+    best_score=float('inf')
+    best_params_prophet-{}
+    for params in list (ParameterGrid(param_grid)):
+        model=Prophet(**params)
+   with suppress_stdout_stderr():
+     model.fit(data_train)
+     
+   forecast=model.predict(data_test.drop(columns='y')
+
+
+    mape_score=mean_absolute_percentage_error(data_test['y'], forecast['yhat'])
+
+    if best score>mape SCore:
+        best_Score=mape_score
+        best_params_prophet['param_best']=params
+        best_model_prophet=model
+
+        return best_model_prophet, best_params prophet
+
+def train_model_prophet(data train, params):
+   '''
+    Train the Prophet mOdel
+    This Function i5 U5ed to retrain the model with nhole available data
+    Arguments
+    Data (Dataframe)- whole avilable data
+    parmametrs best parameters
+    Output: Prophet Model trained on whole available data with
+    '''
+    data_train=data_train.reset_index()
+    data_train.rename(columns=('call_answer_dt':'ds','value':'y'}, inplace=True)
+    model=Prophet (
+                    seasonality_mode=params ['seasonality_mode'],
+                    changepoint_prior_scale=params['changepoint_prior_scale'],
+                    seasonality_prior_scale=params['seasonality_prior_scale'],
+                  )
+    with suppress_stdout_stderr():
+        model.fit(data train)
+
+    return model 
+
+
+
+
         
 
 
