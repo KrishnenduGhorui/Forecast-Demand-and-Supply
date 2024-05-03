@@ -460,9 +460,87 @@ def handle_volume_holiday(data_train, forecast):
     
 def build scenario table daily (df, period_whatif):
 
+    pd.set_option("display.max_columns", None)
+   
+    df_req-=df[[' forecast_date','rule_type','forecast', 'metric'])
+    start_date_whatif, end_date_whatif=df_req.forecast_date.sort_values().unique()
+    [:period_whatif].min(),df_req.forecast_date.sort_values().unique()[:period_whatif].max()
+    df_req=df_req[(df_req['forecast_date']>=start_date whatif) & (df_req['forecast date']<=end_date_whatif)]
+    df_req=df_req.sort_values(by='forecast_date')
+    df_scene=df_req.pivot_table(columns='metric',values=forecast,index=['forecast_date ', 'rule_type']).reset_index()
+    df_ scene.rename(columns={'forecast_date':'date','AHT':'aht_univariate_forecast','HeadCount':'headcount univariate_forecast', '0CC':'occupancy_univariate_forecast',    
+    'SLA':'sla_univariate_forecast', 'Volume':'volume_univariate_forecast',"calls_answeredwithin_30":'calls_answered_within_30_univariate_forecast'},inplace=True)
+    df_scene["volume']=0.0
+    df_scene['aht' ]=0.0
+    df_scene['occupancy']=0.0
+    df_scene['shrinkage']=.4
+    df_scene['shrinkage_univariate_forecast']=0.4
+    df_scene['calls_answered_within_30']=0.0
+    df_scene['headcount']=0.0
+    df_scene['sla']=0.0
+    df_scene[ 'number_of_days']=1
+    df_scene['calls_änswered']=0.0
+    df_scene['calls_answered_univariate_forecast']=(df_scene['headcount_univariate_forecast']*df_scene['number_of_days']*8*60*60*(1-df_scene['shrinkage_univariate_forecast'])*df_scene['occupancy_univariate_ forecast']/df_scene['aht_univariate_ forecast' )
+    df_scenerio_table-df_scene[['date',
+                                'rule_type',
+                                'volume',
+                                "volume_univariate_forecast',
+                                'aht',
+                                'aht univariate_forecast',
+                                "occupancy",
+                                'occupancy_univariate_forecast',
+                                'shrinkage',
+                                'shrinkage_univariate_forecast',
+                                'calls_an swered_within_30',
+                                'calls_answered_within_30_univariate_forecast',
+                                'headcount',
+                                'headcount_ univariate_forecast',
+                                'sla',
+                                'sla_univariate_forecast',
+                                'calls_ answered',
+                                'calls_ answered_ univariate_forecast',
+                                'number_of_days']]
+    df_scenerio_table.fillna(0, inplace=True)
+    print (f'whatif scenario table building is done for daily')
+    return df_scenerio_table
 
-
-
+def build_scenario_table_monthly(df, period_whatif) :
+    pd.set_option('display.max_columns',None)
+    df_req=df[[' forecast date','rule_type', 'forecast', 'metric']]
+    start date_whatif, end_date_whati= df_req. forecast_date.sort_values().unique()
+    [:period_whatif].min(),df_req.forecast_date.sort_values ().unique() [:period_whatif].max()
+    df_req=df_req(df_req['forecast_date']>=start_date_whatif) & (df_req['forecast_date']<=end_date_whatif)]
+    df_req=df_req.sort_values(by='forecast_date')
+    df_scene=df_req.pivot_table(columns='metric',values='forecast',index=[forecast_date', 'rule_type']).reset_index()
+    df_scene.rename(columns={'forecast_date':'date', 'AHT ':'aht_univariate_forecast', 'HeadCount':'headcount_univariate forecast', '0cC':'occupancy','SLA':'sla_univariate_forecast', 'Volume':'volume_univariate_forecast ','calls_answered_within_30':'calls_answered_within_30_univariate_forecast'},inplace=True)
+    df_scene['volume]=0.0
+    df_scene['aht']=0.0
+    df_scene['occupancy']=0.0
+    df_scene['shrinkage']=0.4
+    df_scene['shrinkage_univariate_forecast']=0.4
+    df_scene['calls_answered _within_30']=0.0
+    df_scene['headcount' ]=0.0
+    df_scene['sla']=0.0
+    df_scene['calls_answered_within_30_univariate_forecast']=0.0
+    df_scene['headcount_univariate_forecaşt']=0.0
+    df_scene['sla_univariate_forecast']=0.0
+    df_scene['number_of_days']=df_scene['date'].dt.days_in_month.astype(float)
+    df_scene'calls_answered' ]=0.0
+    df_scene['calls_answered_univariate_forècast']=(df_scene['headcount_univariate_forecast']*df_scene['number_of_days']*8*60*60(1-df_scene['shrinkage_univariate_forecast')*df_scene['occupancy_univariate_forecast']/df_scene['aht_univariate_fore'])
+    df_scenerio_table=df_scene[['date',
+                                "rule_type"
+                                'volume',
+    
+    
+    
+    
+        
+        
+        
+    
+    
+    
+    
 
 
         
