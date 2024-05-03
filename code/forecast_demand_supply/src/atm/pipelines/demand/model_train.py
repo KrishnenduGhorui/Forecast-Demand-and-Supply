@@ -273,14 +273,39 @@ def train_model_ets(data , params) :
     Train the ETS model
     This function is used to retrain the model with whole available data
     Arguments :
-    Data (Dataframe) - whole avilable data
-    parmametrs - best parameters
+                Data (Dataframe) - whole avilable data
+                parmametrs - best parameters
     Output : ETS Model trained on whole available data with
     '''
-    data['value']=data[' value' ].astype ( float)
+    data['value']=data['value'].astype(float)
     model_ets=ETSModel(data['value'],
                       trend=params['trend'],
-                      Seasonal=params['seasonal'],
+                      seasonal=params['seasonal'],
+                      seasonal_periods=params['seasonal_periods'],
+                      initialization_method='heuristic')
+    with suppress_stdout_stderr():
+       fitted_model ets-model_ets.fit(smoothing_level=params['smoothing level'],
+                                      smoothing_trend=params['smoothing_trend'],   
+                                      smoothing_seasonality=params['smoothing_seasonality']
+    return fitted_model_ets
+      
+def train_model_sarinax(data,params):
+'''
+Train the SARIMAX model
+This function is used to retrain the model with shole available data
+Arguments :
+            Data (Dataframe) - whole avilable data
+            parmametrs - best parameters
+Output : SARIMAX Model trained on whole available data with
+'''
+model_sarima =SARIMAX(data['value'],
+                      order=params['order'],
+                      seasonal_order=params['seasonal_order'])
+with suppress_stdout_stderr():
+    fitted model_sarima=model_sarima.fit()
+return fitted_model_sarima
+
+
                       
 
 
