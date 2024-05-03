@@ -412,7 +412,7 @@ def tune_model_prophet (data_train, data_test, param_grid):
         return best_model_prophet, best_params prophet
 
 def train_model_prophet(data train, params):
-   '''
+    '''
     Train the Prophet mOdel
     This Function i5 U5ed to retrain the model with nhole available data
     Arguments
@@ -431,6 +431,36 @@ def train_model_prophet(data train, params):
         model.fit(data train)
 
     return model 
+
+def get_avg_volume_holiday(data_train):
+    data_train_c=data_train.copy()
+    years_train_period=data_train_c.index.year.unique()
+    holidays_train_period=holidays.UnitedStates(years=years_train_period)
+    data_train_c['holiday_name']=data_train_c.index.map (holidays_train_period)
+    volume_avg_holiday=round(data_train_c.groupby('holiday_name').mean()['value'])
+  
+    return volume_avg_holiday
+  
+def handle_volume_holiday(data_train, forecast):
+    volume_avg_holidays=get_avg_volume_holiday (data_train)
+    years_forecast_period=forecast.index.year.unique)
+    holidays_forecast_year=holidays.Unitedstates(years=years_forecast_period)
+    holiday_ dates_forecast_year=holidays_forecast_year.keys()
+    holiday_dates_forecast_period=forecast.index[pd.Series(forecast.index).isin(holiday_dates_forecast_year)]
+  
+    for holiday_date in holiday_dates_forecast_period:
+        holiday_name -holidays_forecast year[holiday_date]
+        volume_avg_holiday=volume_avg_holidays [holiday__name]
+        forecast.loc [holiday_date, "'yhat' ]=volume_avg_holiday
+        calc_std-forecast['yhat'].std()
+        forecast.loc [holiday_date, 'yhat_lower']=volume_avg_holiday- calc_std
+        forecast.loc [holiday_date, 'yhat_upper' ]=volume_avg_holiday+cale_sta
+      
+    return forecast
+    
+def build scenario table daily (df, period_whatif):
+
+
 
 
 
