@@ -567,7 +567,7 @@ def store_data_ba(bq_project,output_project,table_string, df) :
       rows = query_job.result()
       
 # defining function to store data into BQ at once
-def store_ data_bq_f (bq_project, output_project, table_string, df):
+def store_data_bq_f (bq_project, output_project, table_string, df):
     table_location=Output_project+'.'+table_string
     columns=', '.join([col for col in df.columns])
     sql_query=f"""INSERT INTO {table location} ({columns}) VALUES """
@@ -580,7 +580,40 @@ def store_ data_bq_f (bq_project, output_project, table_string, df):
     rows = query_job.result()
 
 # defining function to store data into BỌ in sequence in batch
-def store_data_bq_sea(bq_project, output_project, table_string, df_intra):
+def store_data_bq_seq(bq_project, output_project, table_string, df_intra):
+    batch_size=150
+    for rule_type in df_intra.rule_type.unique():
+        df_intra_rule_type=df_intra[df_intra['rule_type']=rule_type]
+        for metric in df_intra_rule_type.metric.unique ():
+           df_intra_rule type_metric-df_ intra_rule type [dfintra_rule_type[ "metric']==metric]
+           for i in range(0,len(df_ intrarule type_metric), batch_size):
+                df_intra rule type metric batch=df_intra_rule type_ metric.iloc[i:i+batch_size]
+                store_ data ba_f(bq_project,output_project,table_string, df_intra_rule_type_metric_batch)
+             
+# defining function to store scenario table data into BỘ in sequence in batch
+def store_scenario_tbl_ bq seqtbo_project,output project, table_string, df):
+    batch_size=1500
+    for rule_ type in df.rule type.unique):
+        df_rule_type-df [df[ ' rule_type']==rule_type]
+        for i in range (0,len (df_rule type), batch size ):
+            df_rule_type_batch=df_rule_type.iloc[i:i-batch_size]
+            store data ba_f (ba_ project, output_ project, table_string, df_rule_type_batch)
+          
+def replace_scenario_table (bq project, output_project, output_db_name, tb_name, df):
+    table_string=Output db_name+'.'+tb_name
+    table_ref-output project+'.'*table_string
+    dates_to_delete=pd.to_datetime(df.date).sort_values().dt.strftime('%Y-%m-%d').unique()
+    dates_to_delete=', '.join([f"'{date}'" for date in dates_to_delete])
+    client=bigquery.Client(project=bq_project)
+    delete_query=f"DELETE FROM (table_ref} WHERE date IN ({dates_to_delet}) "
+    delete_queryjob=client.query(delete_query)
+    delete_query_job.result()
+    store_scenario_tbl_bq_seq(ba_project, output_project, table_string, df)
+    
+
+
+
+
 
 
 
