@@ -7,7 +7,7 @@ from ..demand.nodes import train_test_splitting
 from ..demand.model_train import build_scenario_table_daily, build_scenario_table_monthly, replace_scenario_table
 
 def supply_data_pipeline( suffix, stack_flag, level) :
-    if(stack_flag = ):
+    if(stack_flag = 0):
       return Pipeline (
         [
           node(
@@ -46,7 +46,7 @@ def supply_data_pipeline( suffix, stack_flag, level) :
             ]
          )
 
-    elif(stack_flag ** 1):
+    elif(stack_flag == 1):
         return Pipeline(
                         node(
                             func=load_supply_data_queue,
@@ -65,6 +65,35 @@ def supply_data_pipeline( suffix, stack_flag, level) :
                                     {level}_params_sarima','f' params:params_tes',f'params : params_grid_prophet',f'params :model_{level}'],
                             outputs=f'best_models_{suffix}_{level}',
                               ),
+                          node(
+                            func=stack_model,
+                            inputs=[f' params:{level}',f'supply_df_{suffix}_{level}',f'best_models_{suffix}_{level}' ,f'params :rule_type _list',f'train_start_date{suffix}_{level}',f'train_end_date_{suffix}_{level}', f'test_start_date_{suffix}_{level}',f'test_end_date_{suffix}_{level}",f'params : num_lags',f'params : params_stack'],
+                            outputs=f'returned_list_{suffix}_{level}',
+                            ),
+                          node(
+                            func=holdout_metrics,
+                            inputs=[f'supply_df_{suffix}_{level}',f'best_models_{suffix}_{level}', f' returned_iist_{suffix}_{level}',f'test_start_date_{suffix}_{leve1}',f'test_end_date_{suffix}_{level}',f' params :model_{level}',
+                            outputs=f'model_mape_dict_{suffix}_{level}'
+                              ),
+                          node(
+                            func=select_model_forecast,
+                            inputs=[f'params :key_arg_ {suffix}',f'model_mape_dict_{suffix}_{level}',f'params:score_model_id',f' params :run_key',f'params :output_project',f'params:output_db_name',f' params :output_ metrics_{level}_tb_name','params :run_date'],
+                            outputs=f' rule_type_model_dict_{suffix}_{level}'
+                             ),
+                          node(
+                              func=forecasting_model_selection,
+                              inputs=[f' params :key_arg_{suffix}', f' params:{level}',f'returned_1ist_{suffix}_{level}',f' best_models_{suffix}_{level}',f'rule_type_model_dict_{suffix}_{level}',f'supply_df_{suffix}_{level}',f'train_start_date_{suffix}_{level}', f'train_end_date_{suffix}_{level}',f'test_start_date_{suffix}_{level}',f'test_end_date_{suffix}_{level}',
+                              f' params:{level}_forecast_period',f' params:model_{level}',f'params :num_lags',f' params:score_model_id',f'params :run_key', 'params :run_date'],
+                              outputs=f'output_df_{suffix}_{level}'
+                              )
+                        ]
+                    )
+
+        
+)
+
+
+
                             
                           
 
