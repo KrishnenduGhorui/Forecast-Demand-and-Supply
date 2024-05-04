@@ -89,8 +89,28 @@ def supply_data_pipeline( suffix, stack_flag, level) :
                         ]
                     )
 
-        
-)
+def aggregator_pipeline (level):
+    if(level=='daily'):
+        return Pipeline(
+            [
+                node(
+                    func=final_output_daily,
+                inputs=[f'output_df_aht(level},f' outputdf_occ_(levely ',f' output_df_Volume_{level}',f'output_df_calls_answered within_30(level}",f'params :(level},f'params:output_project',f' params :output_db_name',f' params :output_tb_name_daily'],
+                outputs=[f'final_output_df_daily',f' forecast_output_df_daily'])
+            ]
+            )
+    elif(level=='monthly'):
+        return Pipeline
+                [
+                node(
+                    func=final_output_monthly,
+                    inputs=[f'output_df_aht_{level}',f'output_df_occ_{level}', f'output df_Volume_{level}',f'params :{level}',f'params :output project',f' paräms :output_db_name',f'params : output_tb_name_monthly'],
+                    outputs=f'final_output_df_{level})
+                ]
+                )
+
+                            
+                            
 
 
 
