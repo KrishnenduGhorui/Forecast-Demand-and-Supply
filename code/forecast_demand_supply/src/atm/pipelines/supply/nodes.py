@@ -141,7 +141,78 @@ def fitted_model_return (model_selected, forecast_input, train_start_date, train
         param grid_tes=params_tes
         best_model tes, best params_tes-param_ tuning tes(data train, data_test, param_grid_tes)
         return TES,best_model_tes, best_params_tes
-    elif model_selected=='PROPHET' :
+    elif model_selected=='PROPHET':
+        param_grid_prophet=params_grid_prophet
+        best_model_prophet, best_params_prophet=tune_model_prophet (data_train,data_test, param_grid_prophet)
+        return "PROPHET',best_model prophet, best_params_prophet
+
+def outlier treatment (datacolumn) :
+    sorted(datacolumn)
+    Q1,Q3 = np.percentile (datacolumn, [25,75])
+    IQR=Q3 - Q1
+    lower_range = Q1 - (1.5 * IQR)
+    upper_range = Q3 + (1.5 * IQR)
+    return lower_range, upper_range
+
+def wmape(forecast, actual):
+    # we take two series and calculate an output a wmape from it
+    forecast=forecast.reset_index()
+    actual=actual.reset_index()
+    forecast = forecast.iloc[:,1]
+    actual = actual.iloc[:,1]
+    print (forecast)
+    print (actual)
+    # make a series calLed mape
+    se_mape = abs (actual-forecast)/actual
+    # get a float of the sum of the actual
+    ft_actual_sum = actual.sum()
+    #get a series of the muttiple of the actual& the mape
+    se_actual_prod_mape = actual * se_mape
+    # Summate the prod. Of the actual and the mape
+    ft_actual_prod_mape_sum= se_actual_prod mape.sum()
+    # float: mape of forecast
+    ft_wmape_forecast = ft_actual_prod_mape_sum / ft_actual_sum
+    ft_ wmape_forecast=round (ft_wmape_forecast, 2)
+    # return a float
+    return ft_wmape_forecast
+
+def forecast_select_data (forecast_input, selected _rule_type)
+    '''
+    select the forecast input data of specific region + program group for forecasting model training
+    Args:
+        forecast_input (dataframe): time-series data of historical calls by rule_type date
+        selected region (str): selected region
+        selected program group (str): selected program group
+    Returns:
+        df_forecast (dataframe): time-series data of historical calls for selected rule_type
+    '''
+    df_forecast=forecast_ input [forecast_input["rule_type"] ==selected_rule_type)
+    lowerbound, upperbound =outlier_treatment(df_forecast.value)
+    df_forecast['value']=np.where(df_forecast ['value']>upperbound, upperbound, np.where (df_forecast['value']
+    <lowerbound, lowerbound, df_forecast['value')))
+
+    return df_forecast
+def stack_model (level, forecast_input, best_models, supply_ag group, train_start_date,train_end_date,test_start_date, test_end_date,num_lags, params_stack):
+    returned list = Parallel(n_ jobs=-1)(
+                    delayed(tune model_stack)(
+                    level, forecast_input, selected_rule_type, best_models, train_start_date,train_end_date, test_start_date, test_end_date, num_lags, params_stack)
+                    for selected_rule_type in supply_ag group)
+
+    return returned_list
+    
+    def holdout_metrics_without_stack(metric, forecast_input; best _params_dict, test_start _date, test_end
+    date, supply_model, score model_id, run key, output project, output_db_name, output_metrics_inter_tb_name, run_date):
+    '''
+    Getting mape metrics value for trained models
+    Args:
+    forecast input (dataframe): tỉme-series data of historical calls
+    
+    
+        
+
+
+
+
 
 
 
