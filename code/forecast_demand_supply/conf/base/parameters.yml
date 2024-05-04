@@ -1,1 +1,90 @@
+daily: 'daily'
+monthly: 'monthly'
+calls_answered_within_30: 'calls_answered_within_30'
+Volume: "Volume"
+key_arg_aht: 'AHT'
+key_arg_occ: 'OCC'
+key_arg_shr: 'SHR'
+monthly_sql_file_path:'./src/atm/sql/monthly.sq1'
+daily_sql_file_path: './src/atm/sq1/daily.sq1'
+intraday_sql_ file_path: './src/atm/sql/intraday.sql'
+bq_project: 'vz-it-np-ivqv-dev-mldmdo-0'
+env: "dev"
+run_key: "vbg_10_10_monthly_test"
+score_model id: "vbg_ftl_bgco"
+output_db name: "ds_work_tbls"
+output_ tb_name monthly: "vbg_ ftl_bgco_daşhboard_monthly_pred_tb1'
+output_tb_name_ daily: 'vbgftl_bgco_dashboard_daily_pred_tbl'
+output_tb_name_ intraday: 'vbg_ftl_bgco_ dashboard_intraday_pred_tbl'
+output_metrics_monthly_tb_name: "vbgftl_bgco_dashboard_monthly_metrics"
+output_metrics_daily_tb_name: 'vbg_ftl_bgco_dashboard_daily_metrics'
+output_metrics_monthly_intermediate_ tb_name : 'vbg ftl_bgco_dashboard_ monthly_intermediate_metrics'
+output_netrics_daily_intermediate_tb_name: 'vbg_ftl_bgco_dashboard_daily_intermediate_metrics'
+output_whatif_scenario_monthly_tb_name: 'vbg ftl_bgco_dashboard_monthly_whatif_scenario_tbl'
+output_whatif_scenario_daily_tb_name: 'vbg_ftl_bgco_dashboard_daily_whatif_scenario_ tbl'
+output_whatif_scenario_intraday_tb_name: 'vbg ftl_ bgco_dashboard_intraday_whatif_scenario_tbl'
+output_project: "vz-it-np-fjpv-dev-vzdsdo-0"
+
+rule_type_list: ["Tech_Exp_Call', "BGCO_Core_Call', 'Federal_Cal1', 'Tech_Adv_Call', 'Gco_Core_Call')
+model_daily: ['PROPHET'] 
+model_monthly:['PROPHET','SARIMAX', 'ETS']
+monthly_forecast_period: 18
+daily_forecastperiod: 60
+period_whatif_daily: 60
+period_whatif_monthly: 6
+period_whatif_intraday : 60
+num_lags : 6
+sql_start_date: "2021-06-01"
+Volume_train_start_date: "2021-06-01"
+supply_train_start_date: '2021-06-01'
+# rundate: 2823-07-01"
+detmand_split_ratio_monthly: 0.2
+supply_plit_ratio_monthly: 0.2
+demand_split_ratio_daily: 0.06
+supply_plit_ratio_daily: 0.06
+
+daily_params_ets: 0
+params_tes: 0
+daily_params_sarima: 0
+
+monthly_params_ets:
+  trend: ['add", 'mul' ]
+  error: ['add', 'mul']
+  seasonal: ['add','mul']
+  smoothing_level: [0.1,0.3,0.5,0.7,0.9)
+  Smoothing_trend: [0.1,0.3,0.5,0.7,0.9]
+  Smoothing_seasonality: [0.1,0.3,0.5,0.7,0.9]
+  seasonal periods: [12]
+  
+monthly params sarima:
+  p_min: 0
+  d_min: 0
+  q_min: 0
+  D_max: 2
+  d_max: 2
+  q_max: 2
+  P_min: 1
+  D_min: 0
+  Q_min: 1
+  P_max: 2
+  D_max: 2
+  Q_max: 2
+  m : 12
+  seasonal: True
+  Scoring: mape
+  
+params stack:
+  max depth : [4]
+  learning_rate : [0.1]
+  n_estinators :[10]
+  
+params_grid_prophet:
+  changepoint_prior_scale: [0.001, 0.01, 0.1, 0.5]
+  seasonaiity_prior_scale: [0.01, 0.1, 1.0, 10.0]
+  seasonality_mode: ['multiplicative','additive']
+
+
+
+
+
 
