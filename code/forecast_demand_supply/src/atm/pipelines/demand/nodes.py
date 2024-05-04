@@ -382,8 +382,31 @@ def forecasting_model_selection(metric,level, returned_list, best_params_dict, r
             df['1b']=df['predicted_mean']-calc_std
             df['ub' ]=df['predicted_mean']+calc_std
             df.index=pd.to_datetime (df.index)
+            
         elif rule_type_model_dict[key]=='TES':
             param_grid_tes=my_dict['TES]
+            best_model_tes-train_model_tes (data_train, param grid_tes)
+            forecast-best_model_tes.forecast(forecast_period)
+            df.index=pd.to_datetime(df.index)
+        elif rule_type_model _dict[key ]=-PROPHET' :
+            param grid prophet=my_dict['PROPHET']
+            best_model_prophet=train_model_prophet(data_train, param_grid_prophet)
+            if(level=='monthly' ):
+                forecast=best_model_prophet.predict(pd.DataFrame(pd.date_range (start=forecast_start_date, end=forecast_end_date, freq="MS"),columns=['ds']))[['ds', 'yhat','yhat_lower','yhat_upper']]
+            elif(level=='daily'):
+                forecast-best_model_prophet. predict (pd. DataFrame (pd.date_range(start=forecast_start_date, end=forecast end_date, freq='D'), columns=['ds']))['ds', 'yhat','yhat_lower','yhat_upper']]
+                forecast=round(forecast)
+                df=pd.DataFrame(forecast)
+                df.set_index('ds',inplace=True)
+
+        elif rule_type_model_dict[key]=='STACK":
+            for i in retunned_ list:
+                if(i[0] ==key) :
+                    param_grid_stack=i[2]
+                    best_model_stack=train_model_stack(i[3],i[5],i[4],i[6],param_grid_stack)
+     
+
+
             
 
 
