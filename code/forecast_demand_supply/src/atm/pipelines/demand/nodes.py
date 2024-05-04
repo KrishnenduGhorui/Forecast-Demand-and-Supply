@@ -294,7 +294,103 @@ def holdout_metrics (forecast_input, best_params_dict, returned_list,test_start_
                 mape = mean_absolute_percentage_error(forecast, actual)
                 model_mape_dict [key]['STACK']=mape
     return model_mape_dict
+
+def select_model_forecast(metric,model_mape_dict, sCore model_id, run_key, output_project, output_db name, output_metrics_tb_name,run_date):
+    '''
+    Selecting best nodel for each group(rule type) that is having least mape
+    args :
+    returns :
+            rule_type_model_dict (dictionary) : Contain group name (rule type) as key, best model algo name for corresponding group(rule type) as value
+    '''
+    output metrics_dict = collections.defaultdict (dict)
+    rule_type_model_dict = collections.defaultdict (dict)
+    for rule_type in model_mape_dict:
+        sub_dict-model_ mape_dict [rule_type]
+        best_model=min(sub_dict, key-sub_dict.-get)
+        Shich mOdel algorithm to use as per minimum mape per rule type
+        #sub dict has group name and best model has which model to use
+        rule_type_modeldict[rule_type]=best_model
+        output_metrics_dict[rule_type][best_model]=sub_dict[best_model]
+    cols = ['queue', 'metric_value','model']
+    lst1=[]
+    for key in output_metrics_dict:
+        for k, v in output_metrics_dict[key].items():
+            value=float(v)
+            model=k
+        lstl.append([key, round (value, 3), model])
+    output_metrics_df=pd. DataFrame (1st1, columns cols)
+    output_metrics_df['forecast_date']=datetime.now().date()
+    output_metrics_df['metric']=metric
+    output_metrics_df['metric_name']='wmape'
+    output_metrics_df['rpt_dt' ]=last_day_month(run_date)
+    output_metrics_df['score_model_id']=score_model_id
+    output_ metrics_df[' run_key']=run_key
+    output_metrics_df-output_metrics_df[['forecast_date', 'queue','metric', 'metric_name', 'metric_value', 'model','rpt_dt', 'score_model_id','run_key']]
+    #write output to bq
+    project_id=outputproject
+    db_name=output_db_name
+    tb_name=output_metrics_tb_name
+    table_string=db_name+'.'+tb_name
+    output_metrics_df.to_gbq (table_string, project_id, if_exists='append' )
+    return rule_type_model1_dict
     
+def forecasting_model_selection(metric,level, returned_list, best_params_dict, rule _type_model_dict, forecast_input, train_start_date, train_end_date, test_start_date, test_end_date, forecast_period,demand_model, num_lags, score_model_id, run key, run_date) :
+    '''
+    Perform retraining of the model algo that is selected as best for à rule type, retraining done on shole avilable data, provides that trained model
+    Input :
+            model name: string,
+            data : dataframe,
+            parameters' : dictionary
+    Output : model name, best trained model object
+    '''
+    logging.info(f'Received best parameters - {best_params_dict}')
+    output_df=pd.DataFrame()
+    train_start_date=pd.to_datetime(train_start_date)
+    train_end_date=pd.to_datetime(train_end_date)
+    test_start_date=pd.to_datetime(test_start_date)
+    test_end_date=pd.to_datetime(test_end_date)
+    for key in rule_type_model_dict:
+        df_tempforecast_select_data(forecast_input, key)
+        data_train-df_temp. loc[ (df_temp. index >- train_start_date) & (df_temp . index <- test_end_date) ]
+        if(level-=' monthly'):
+            forecast_start_date = pd.to_datetime(test_end_date)+pd. Date0ffset (months=1)
+            forecast_end_date = pd.to_datetime (test_end_date) +pd.Date0ffset (months=forecast_period)
+        elif(level==' daily' ):
+            forecast_start_date = (max(data_train.index)+pd.Date0ffset (days=1)).date()
+            forecast_end_date = (max (data_train.index) +pd.DateOffset (days=forecast_period)) .date()
+    
+        my_dict = (tup[0]: tup[2][' param_best'] for tup in best_params_dict [key]}
+        if rule_type_model_dict[kęy]=='ETS':
+            param_grid_ets-my_dict['ETS']
+            best model_ ets=train model_ets (data_ train, param grid_ets)
+            forecast-best model ets.forecast(forecast period)
+            forecast-round(forecast)
+            df=pd.DataFrame(forecast)
+            calc_std=round(forecast.stdO)
+            df.rename(columns={df.columns[0]:'predicted_mean'},inplace=True)
+            df['lb']=df['predicted mean']-calc std
+            df['ub']=df['predicted mean']+calc std
+            df.index=pd.to_datetime (df.index)
+        elif rule_type_model_dict[key]=='SARIMA' :
+            param grid_sarima=my dict['SARIMA' ]
+            best model sarima-train_model sarimax(data train, param grid_sarima)
+            forecast-best model sarima.forecast(forecast period)
+            forecast-round(forecast)
+            df-pd.DataFrame (forecast)
+            calc_std=round(forecast.std())
+            df.rename(columns-{df.columns[O]: 'predicted_mean'}, inplace=True)
+            df['1b']=df['predicted_mean']-calc_std
+            df['ub' ]=df['predicted_mean']+calc_std
+            df.index=pd.to_datetime (df.index)
+        elif rule_type_model_dict[key]=='TES':
+            param_grid_tes=my_dict['TES]
+            
+
+
+    
+    
+    
+        
     
     
     
