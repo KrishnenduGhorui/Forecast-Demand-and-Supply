@@ -200,12 +200,68 @@ def stack_model (level, forecast_input, best_models, supply_ag group, train_star
 
     return returned_list
     
-    def holdout_metrics_without_stack(metric, forecast_input; best _params_dict, test_start _date, test_end
+def holdout_metrics_without_stack(metric, forecast_input; best _params_dict, test_start _date, test_end
     date, supply_model, score model_id, run key, output project, output_db_name, output_metrics_inter_tb_name, run_date):
     '''
     Getting mape metrics value for trained models
     Args:
-    forecast input (dataframe): tỉme-series data of historical calls
+        forecast input (dataframe): tỉme-series data of historical calls by rule_type / date
+        best_params_dict (dictiopary) :
+    Returns:
+        Dictionary with mape metrics value of all models
+    '''
+    output_df = pd.DataFrame()
+    test_start_date-pd.to_datetime(test_start_date)
+    test_end_date=pd.to_datetime (test_end_date)
+    model_mape_dict = collections.defaultdict (dict)
+    for key in best_params_dict:
+        df_temp = forecast_select_data(forecast_input, key)
+        df_temp-df_temp.loc[ (df_temp.index >= test_start_date) & (df_temp.index <= test_end_date)]
+        actual=round (df_temp[ 'value'],2)
+        for i in range(len(supply_model)):
+            if(best_ params_dict [key] [ij [e])=='ETS' :
+                forecast-best_params_dict [key] [ij[1].forecast (actual.shape [0])
+            if(best_params_dict[key[ij[O])=='SARIMA':
+                forecast-best_params_dict [key] ij[1].forecast (actual.shape [e])
+            if(best params_dict[key][il[0])=='TES':
+                forecast=best_params_dict [key] [ij[1].forecast (actual.shape [0])
+            if(best params_dict[key] [il [e ) ==' PROPHET':
+                test_df-pd.Data Frame (df_temp. index).rename (columns={'call answer dt":'ds'})
+                forecast-best_params_dict [key] [i] [1] -predict (test_df)['yhat']
+            forecast-pd.Series (round (forecast, 2) )
+            forecast.rename ("forecast", inplace-True)
+            mape = wmape(forecast, actual)            
+            model_mape_dict [key] [Dest_params_dict [key) [i][O]]-mape
+            ind=pd.DataFrame(index-actual.index)
+            ind-ind.reset_index()
+            df-pd.concat( [ind ,reset_index(drop=True), actual.reset_index(drop=True), forecast.reset_index(drop-True) ] , axis-1)
+            df['wmape']=round (mape, 2)
+            df['rule_type']=key
+            df['metric']=metric
+            output_df=pd.concat( [output_df, df), axis-0)
+    output_df output_df .rename (columns-('value': 'actual'))
+    output_df-output_df.groupby (I' call_answer_dt ', 'rule_type', 'metric','actual']) [wmape',' forecast ' ] .min()
+    output_df-output_df.reset_index()
+    output_df-output_df. sort_values (by='rule_type')
+    output_df['score_model_id']=score_model_id
+    output_df['run key' ]=runkey
+    # output_ df[ 'rpt_ dt']=datetime. now(). date()
+    output_df['rpt_dt ']-last_day_month(run_date)
+    output df=output_df[['call_answer_dt ') 'rule type', 'metric', 'actual', 'forecast', 'wmape','score_model_id', 'run_key', 'rpt_dt" 1J
+    output_df[ 'actual') = output_df['actual'].astype(float)
+    output_df[' forecast'] = output_df[' forecast' ].astype(float)
+    db_name=output_db_name
+    tb_name=output_metrics_inter_tb_name
+    table_string =db_name+'.'+tb_name
+    project_id=output_project
+    output_df.to_gba(table_string, project_id, if_exists='append' )
+    return model_mape_dict
+              
+holdout_metrics(forecast_input, best _params_dict, returned_list, test_start_date,test_end_date, supply_model):
+
+
+    
+
     
     
         
