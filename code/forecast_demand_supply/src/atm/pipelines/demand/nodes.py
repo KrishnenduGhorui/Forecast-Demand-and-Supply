@@ -540,7 +540,7 @@ def forecasting_model_selection_without_stack (metric,level, best_params_dict, r
         forecast_start_date = (max(data_train.index) +pd. DateOffset (days=1) ) . date()
         forecast_end_date = (max (data_ train.index) +pd.Date0ffset (days=forecast_period) ).date()
     my_dict = (tup[O]: tup[2] ['param_best'] for tup in best_params_dict[key]}
-    if rule_type_model_dict [key] ='ETS':
+    if rule_type_model_dict [key] =='ETS':
         param_grid_ets=my_dict['ETS']
         est_model_ets=train_model_ets (data_train, param_grid_ets)
         forecast=best_model_ets.forecast (forecast_period)
@@ -570,8 +570,109 @@ def forecasting_model_selection_without_stack (metric,level, best_params_dict, r
         best_model_tes=train_model_tes (data_train, param_grid_tes)
         forecast=best model_tes.forecast (forecast_period)
         df.index=pd.to_datetime(df.index)
-    elif rule_type_model_dict [key] ='PROPHET':
+    elif rule_type_model_dict[key] =='PROPHET':
         param_grid_ prophet=my_dict["PROPHET"]
+        param grid prophet-my_dict['PROPHET']
+        best_model_prophet=train_model_prophet (data_train, param_grid_prophet)
+        if(level=='monthly' ) :
+            forecast-best_model_prophet.predict (pd.Dataframe (pd.date_range(start =forecast_start_date, end=forecast_end_date, freq='MS'),columns('ds']))[['ds', 'yhat', 'yhat_lower', 'yhat_upper']]
+        elif(level=-'daily' ) :
+            forecast=best_model_prophet. predict (pd.DataFrame (pd.date_range (start=forecast_start_date, end=forecast_end_date, freq='D'), columns["ds"]))[['ds', 'yhat', 'yhat_lower', 'yhat_upper']]
+            forecast=round ( forecast)
+            df=pd.Dataframe (fore cast)
+            df.set_index('ds' ,inplace=True)
+    df.rename (columns={df.columns [O]: metric), inplace-True)
+    df.rename (columns={df.columns [1]: metric+'_lower_bound'},inplace-True)
+    df.rename (columns=(df. columns[2]: metric+'_upper_bound'}, inplace-True)
+    df[metric+"_lower_bound"] = df[metric+'_lower_bound'].round ()
+    df[metric+'_upper_bound'] = df [metric+'_upper_bound']. round()
+    
+    df[metric}[df[metric] <= 0] = np.nan
+    categorY_me an-df[metric].mean()
+    df[metric].fillna(category_mean, inplace=True)
+    df[metric] = df[metric].round()
+    df[metric+'_lower_bound'] = df[metric+'_lower_bound'].clip (lower =0)
+    df[metric+'_upper_bound'] = df[metric+'_upper_bound'].clip (lower=0) 
+    df[ forecast_date'] = df.index
+    df.reset_index(drop=True)
+    df['rule_type']=key
+    output_df=pd.concat ([output_df, df], axis=0)
+    output_df['rpt_dt' ]=last_day_month (run_date)
+    output_df['score_model_id']=score_model_id
+    output_df['run_key']=run_key
+output_df-output_df[['forecast_date', 'rule_type', metric, metric+'_lower_bound ' , metric+" _upper_bound", 'rpt_dt', 'score_model_id',"run_key"]
+
+return output_df
+
+def output_validation(df, level, parameters):
+    #'function to validate output for demand'    
+    count=df.shape[]
+    if(level='monthly'):
+        months=parameters['monthly_forecast_period']
+        total_rows=months*len(parameters['rule_type_list'])*3 #number of metrics
+    error_msg=""    
+    try:
+    #checking number of values in input df
+    assert count != 0,"No Data in output table"
+    
+    except AssertionError as e:
+        if not error msg:
+            error msg += e.args[O]
+        else:
+            error_ msg += "\n"+e.args[0]
+    try:
+    #checking number of values in input df
+    assert not df.isnull().values.any(), 'Output table contains null values'
+    except AssertionError as e:
+        if not error msg:
+            error_msg += e. args[0]
+        else:
+            error_msg += "\n"+e.args[0]
+    try:
+    #checking number of values in input df
+    assert count == total_rows, 'Output table data insufficiency'
+    
+    except AssertionErrr as e:
+        if not error msg:
+            error msg +=e.args [O]
+        else:
+            erron msg+="n" +e.args 0]
+
+    if not error_msg:
+    # assert True, "Input validation Success"
+        print( "Output validation Success"*)
+    else:
+        print(error_msg)
+        print ("Output validation Failure")
+    logging.info("Output validation is completed.")
+    
+def train_test_splitting (forecast_input,demand_rule_list, train_start_date,run_date, level, split ratio) :
+    for i in demand_rule_list:
+        df_forecast = forecast_input [forecast_input ["rule__type"] = i]
+        break
+    train_start_date=pd.to_datetime (train_start_date)
+    run _date = pd.to_datetime (run_date)
+    if(level=='monthly' ):
+        month_back = run _date - relativedelta(months-1)
+        test_end_date-month_back.replace(day-1)
+    if(level=='daily'):
+        test _end_date = run_date - timedelta(days=2)
+    test_end_date-pd.to_datetime (test_end_date)
+    df_forecast-df_forecast.loc[ (df_forecast.index => train_start_date) & (df_forecast.index <= test_end_date)]
+    train, test = train_test_split (df_forecast, test_size=split_ratio, shuffle=False)
+    
+    train_end_date=train.index.max()
+    test_end_date=test.index.max()
+    
+    return train_start_date,tarin_end_date,test_start_date,test_end_date
+    
+    
+    
+
+    
+
+
+
 
 
 
