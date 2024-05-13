@@ -219,19 +219,19 @@ def holdout_metrics_without_stack(metric, forecast_input; best _params_dict, tes
         df_temp-df_temp.loc[ (df_temp.index >= test_start_date) & (df_temp.index <= test_end_date)]
         actual=round (df_temp[ 'value'],2)
         for i in range(len(supply_model)):
-            if(best_ params_dict [key] [ij [e])=='ETS' :
-                forecast-best_params_dict [key] [ij[1].forecast (actual.shape [0])
-            if(best_params_dict[key[ij[O])=='SARIMA':
-                forecast-best_params_dict [key] ij[1].forecast (actual.shape [e])
-            if(best params_dict[key][il[0])=='TES':
+            if(best_params_dict [key] [ij [e])=='ETS' :
                 forecast=best_params_dict [key] [ij[1].forecast (actual.shape [0])
-            if(best params_dict[key] [il [e ) ==' PROPHET':
-                test_df-pd.Data Frame (df_temp. index).rename (columns={'call answer dt":'ds'})
-                forecast-best_params_dict [key] [i] [1] -predict (test_df)['yhat']
-            forecast-pd.Series (round (forecast, 2) )
+            if(best_params_dict[key[ij[O])=='SARIMA':
+                forecast=best_params_dict [key][i][1].forecast (actual.shape [0])
+            if(best params_dict[key][il[0])=='TES':
+                forecast=best_params_dict [key][i][1].forecast (actual.shape [0])
+            if(best params_dict[key] [i][0]) =='PROPHET':
+                test_df=pd.DataFrame (df_temp. index).rename (columns={'call answer dt':'ds'})
+                forecast=best_params_dict [key] [i] [1] -predict (test_df)['yhat']
+            forecast=pd.Series (round (forecast, 2) )
             forecast.rename ("forecast", inplace-True)
             mape = wmape(forecast, actual)            
-            model_mape_dict [key] [Dest_params_dict [key) [i][O]]-mape
+            model_mape_dict [key] [Dest_params_dict [key) [i][O]]=mape
             ind=pd.DataFrame(index-actual.index)
             ind-ind.reset_index()
             df-pd.concat( [ind ,reset_index(drop=True), actual.reset_index(drop=True), forecast.reset_index(drop-True) ] , axis-1)
@@ -257,7 +257,105 @@ def holdout_metrics_without_stack(metric, forecast_input; best _params_dict, tes
     output_df.to_gba(table_string, project_id, if_exists='append' )
     return model_mape_dict
               
-holdout_metrics(forecast_input, best _params_dict, returned_list, test_start_date,test_end_date, supply_model):
+holdout_metrics(forecast_input, best_params_dict, returned_list, test_start_date,test_end_date, supply_model):
+    '''
+    Getting mape metrics value for trained models
+    Args:
+        forecast_input (dataframe) : time - series data of historical calls by rule_type / date
+        best_params_dict (dictionary) :
+    Returns:
+        Dictionary with mape metrics value of all models
+    '''
+    test_start_date=pd.to_datetime (test_start_date)
+    test_end_date=pd.to_datetime(test_end_date)
+    model_mape_dict =collections.defaultdict (dict)
+    for key in best_ params_dict:
+        df_temp= forecast_select_data(forecast_input, key)
+        df_temp-df_temp. loc[ (df_temp. index >= test_start_date) & (df_temp. index <= test_end_date) ]
+        actual=df_temp['value']
+        
+        for i in range(1en(supply_model) ):
+            if(best_params_dict[key ] [i][O) =='ETS':
+                forecast-best_params_dict[ key ] [i] [1]. forecast (actual .shape[0])
+            if(best_params_dict [key] [ij[0]) == 'SARIMA' :
+                forecast=best_params_dict [key ] [i] [1].forecast (actual.shape [0])
+            if(best_params_dict [key ] [ij[0]) =='TES' :
+                forecast=best_params_dict [key] [i] [1].forecast (actual.shape[0])
+            if(best_params_dict [key][i][O]) =='PROPHET':
+                test_df-pd.DataFrame (df_temp.index).rename (colunns={'call_answer_dt':'ds'})
+                forecast=best_params_dict [key] [i][1]. predict (test_df)['yhat']
+            mape = mean_absolute_percentage_error (forecast, actual)
+            model_mape_dict [key] [best params_dict [key] [i][O]=mape
+        for i in returned_list:
+            if(i[8]=-key):
+                forecast-i[1]. predict (i[5])
+                mape = mean_absolute_percentage_error (forecast, actual)
+                model_mape_dict [key]['STACK']=mape
+    return model_ mape_dict
+
+def select_model_forecast (metric, model_mape_dict,score_model_id, run key, output_project, output_db_name, output_metrics_monthly_tb_name, run date):
+    '''
+    Selecting best model for each group (rule type) that is having least mape
+    args:
+    returns:
+rule_type_model_dict (dictionary) : Contain group name (rule type) as key, best model algo name for corresponding group(rule
+type) as value
+    '''
+    output_metrics_dict = collections.defaultdict (dict)
+    rule_type_model_dict = collections.defaultdict (dict )
+    for rule_type in model_mape_dict:
+    sub_dict-model_mape_dict [rule_type]
+    best_model-min(sub_dict, key=sub_dict.get)
+    #which model algorithm to use as per minimum mape per rule type
+    #sub_dict has group name and best_model has which model to use
+    rule_type_model_dict [rule_type]-best_model
+    output_metrics_dict [rule_type] [best_model] =sub_dict[best_ model]
+    
+    cols = ['queue', 'metric_value', 'model']
+    lst1=[]
+    for key in output_metrics_dict:
+        for k, v in output_metrics_dict [key].items (0:
+            value=float (v)
+            model=k
+        lst1.append ( [key, round (value, 3), model] )
+    output_metrics_df pd.DataFrame (1st1, columns=cols)
+    output metrics_df['forecast_date']=datetime . now() . date()
+    output metrics_df'metric']-metric
+    output metrics_df['metric name']-'wmape
+    output metrics_df['rpt_dt']-last_day month (run_date)
+    output_metrics_ df['score model id']=score_model_id
+    output_metrics_df[' run key' ] =run key
+    
+    Output_metrics_df=output_metrics_df[['forecast date','queue','metric', 'metric_name','metric_value','model','rpt_dt','score_model_id','run_key']]
+    project_id=output_project
+    db_name=output_db_name
+    tb_name=output metrics_monthly_tb_name
+    table_string=db_name+'.'+tb_name
+    output metrics_df.to_gba(table_string, project_id, if_exists='append')
+    return rule_type_model_dict
+    
+def forecastingmodel_selection(metric, level, returned_list, best_paras_aict, rule_type_ model_ dict, forecast_input, train_start_date, train_eng da
+te, test_start_date, test_end_date, forecast_period, supply_model, num lags, score_model_id, run_key, run_date):
+    '''
+    Perform retraining of the model algo that is selected as best for a rule type, retraining done on whole ayilable data, provides that
+    trained model
+    Input :
+    model name: string,
+    data : dataframe,
+    parameters : dictionary
+    Output:model name, best trained model object
+    '''
+    logging. info(f' Received best parameters - (best_params_dict}')
+    output_df = pd.DataFrame()
+    train_start_date=pd.to_datetime (train_start_date)
+    train_end_date=pd.to_datetime(train_end_date)
+    test_start_date=pd,to_datetime(test_start_date)
+    test_end_date=pd.to_datetime (test_end_date)
+
+
+
+
+    
 
 
     
