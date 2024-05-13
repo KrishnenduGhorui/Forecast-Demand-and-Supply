@@ -334,8 +334,7 @@ type) as value
     output metrics_df.to_gba(table_string, project_id, if_exists='append')
     return rule_type_model_dict
     
-def forecastingmodel_selection(metric, level, returned_list, best_paras_aict, rule_type_ model_ dict, forecast_input, train_start_date, train_eng da
-te, test_start_date, test_end_date, forecast_period, supply_model, num lags, score_model_id, run_key, run_date):
+def forecasting_model_selection(metric, level, returned_list, best_paras_aict, rule_type_ model_ dict, forecast_input, train_start_date, train_end_date, test_start_date, test_end_date, forecast_period, supply_model, num lags, score_model_id, run_key, run_date):
     '''
     Perform retraining of the model algo that is selected as best for a rule type, retraining done on whole ayilable data, provides that
     trained model
@@ -351,6 +350,119 @@ te, test_start_date, test_end_date, forecast_period, supply_model, num lags, sco
     train_end_date=pd.to_datetime(train_end_date)
     test_start_date=pd,to_datetime(test_start_date)
     test_end_date=pd.to_datetime (test_end_date)
+
+    for key in rule_type_model_dict:
+        df_temp=forecast select_data(forecast_ input, key)
+        data_train=df_temp.loc[(df_temp.index >= train start date) & (df_temp.index <= test_end_date)]
+        if(level=='monthly' ) :
+            forecast_start _date = pd.to datetime (testend date)+pd.Date0ffset (months-1)
+            forecast_end date = pd.to datetime(test end date)+pd.Date0ffset(months-forecast_period)
+        elif(level=='daily'):
+            forecast_start_date = (max(data train.index)+pd.Date0ffset (days=1)).date()
+            forecast_end date = (max(data train.index) +pd.Date0ffset(days=forecast_period) ).date()
+        my_dict = (tup[O]: tup[2]["param best for tup in best_params_dict[key]}
+        if rule_type_model_dict [key]=='ETS':
+            param grid_ets=my_dict['ETS']
+            best model_ets=train_model_ets(data_train, param_grid_ets)
+            forecast=best_mode_ets.forecast(forecast period)
+            forecast=round(forecast, 2)
+            df=pd.DataFrame(forecast)
+            calc_std=round( forecast.sta(),2)
+            df.rename(columns=(df.columns[01:predicted meaninplace-True)
+            df['1b' ]=df[' predicted_mean' ]-calc std
+            df['ub' ]=df['predicted mean' ]+calc_std
+            df.index=pd.to_datetime (df. index)
+            
+        elif rule_type_model_dict[key]='SARIMA' :
+            param grid sarima=my_dict['SARIMA']
+            best_model_sarima=train_model_sarimax (data_train, param grid_sarima)
+            forecast=best_model_sarima.forecast(forecast_period)
+            forecast=round (forecast, 2)
+            df=pd.DataFrame (forecast)
+            calc_std=round (forecast.std(),2)
+            df.rename(columns-{df.columns [e]: ' predicted_mean'},inplace-True)
+            df['lb']-df['predicted_mean']-calc_std
+            df[ub' ]=df['predicted_mean' ]+calc_std
+            df.index=pd.to_datetime (df.index)
+
+        elif rule_type_model_dict [key]=='TES':
+            param grid_tes=my_dict['TES']
+            best_model_tes=train_model_tes (data_train, param_grid_tes)
+            forecast=best_model_tes.forecast (forecast_period)
+            df.index=pd.to_datetime (df. index)
+
+        elif rule_type_model_dict[key]== 'PROPHET' :
+            param grid_prophet-my_dict ['PROPHET']
+            best_model_prophet-train model_prophet (data_train, param grid_prophet)
+            if(level=='monthly'):
+                forecast =best_model_prophet.predict (pd.Dataframe(pd.date_range (start=forecast_start_date, end=forecast_end_date, freq='MS'), columms ='ds']))[['ds','yhat', 'yhat_lower', 'yhat upper']]
+            elif(level=='daily'):
+                forecast=best_model_prophet.predict (pd.DataFrame (pd.date_range(start=forecast_start_date, end=forecast_end_date, freq= 'D' ), columns='ds']))[['ds','yhat','yhat_lower','yhat upper']]
+         
+            forecast=round(forecast, 2)
+            df=pd.DataFrame (forecast)
+            df.set_index('ds',inplace=True)
+        elif rule_type_model_dict[key]=='STACK':
+            for i in returned_list:
+                if(i[8] ==key):
+                    param grid_stack-i[2]
+                    best_model_stack=train_model_stack(i[3],i[5],i[4],i[6], param grid_stack)
+                    for j in range(len (supply_model)):
+                        if (best_params_dict [key][j][0])=='ETS':
+                            ets_fitted=best _params_ dict[key][3I[1]
+                        if(best_params_dict [key][j][0])=='SARIMA':
+                            sarima_fitted=best_params_dict [(key]tij[1]
+                        if(best_params_dict [key][j][0])=='PROPHET':
+                            prophet_fitted=best_params_dict[key][i][1)
+                            
+                    forecast=forecast_stack(level, i[4],i[6],n um_lags, ets_fitted, sarima_fitted, prophet_fitted, best_model_stack, forecast_period)
+                    forecast=round(forecast,2)
+                    df=pd.Dataframe (forecast)
+                    calc_std=round(forecast.std(),2)
+                    df.rename(columns=(df.columns [0]: 'predicted_mean'},inplace=True)
+                    df['lb']=df['predicted_ mean']-calc_std
+                    df['ub' ]=df['predicted_mean']+calc_std
+                    #df. index=pd.to_datetime (df.index)
+
+        df.rename (columns={df.colúmns [0]: metric, inplace=True) *
+        df.rename (columns={df.columns [1]: metric+'_lower_bound'}, inplace=True)
+        df.rename (columns={df.columns [2]: metric+'_upper_bound'}, inplace=True)
+        dF[metric+'_lower_bound'] = df[metric+'_lower_bound'].round (2)
+        df[metric+'_upper_bound'] = df[metric+'_upper_bound'].round (2)
+
+        df[metric][df [metric] <= 0] = np.nan
+        category_mean=df[metric].mean()
+        df[metric].fillna(category_mean, inplace=True)
+        df[metric] = df[metric].round (2)
+
+        df[metric+'_lower_ bound'] = df [metric+'_lower_bound'].clip(lower=0)
+        df[metric+'_upper_bound'] = df [metric+'_upper_bound'].clip(lower=0)
+        df[forecast date'] = df.index
+        df.reset_index(drop=True)
+        df['rule_type']=key
+        #df['metric']=metric
+        output_df=pd.concat([output_df, df], axis=0)
+        #output_df['as_of_date "]=datetime. now().date()
+        output_df['rpt_dt']=last_day_moth(run_date)
+        output_df['score_model_id']=score_mode1_id
+        output_df['run_key']=run_key
+
+        output_df=output_df[['forecast_date', 'rule_type', 'rpt_dt','score_mode_id', 'run_key','metric', metric+'_lower_bound', metric+'_upper_bound']
+    
+    return output_ df
+        
+
+
+     
+
+
+
+
+
+
+
+
+    
 
 
 
