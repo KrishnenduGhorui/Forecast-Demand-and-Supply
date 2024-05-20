@@ -333,6 +333,60 @@ group by call_month, call_ansiver_dt,rule_type, eid
 ),
 Agent AS
 SELECT*
+From
+SELECT
+DATE_TRUNC (cast(a.Stat_Date as date),MONTH) AS RptMth,
+cast(a.Stat Date as date) AS Stat_Date,
+trim(b.emp_id) as emp_id,
+trim(b.enterprise_id) as eid,
+trim(b.level_id) as level_id,
+trim(b.function _desc) as function_desc,
+trim(b.geographic_loc_desc) as geographic_loc_desc,
+trim(b.peoplesoft_title_id) as peoplesoft_title_id,
+--trim(c. ag_grouping) as ag_grouping, /*** Grouping by rule_type for Phase II ***/
+CASE WHEN cast(b.level_id as numeric) < 4 THEN SUM(CAST (IFNULL (cast (a . Handled_Calls as numeric), 0) AS BIGINT)) E1se 0
+End AS CallsHandled,
+CASE WHEN cast(b.level_id as numeric) < 4 THEN SUM(CAST (IFNULL(cast (a.Available_Time as numeric), 0) AS BIGINT)) Else 0
+End AS Availablé,
+CASE WHEN cast (b.level id as numeric) < 4 THEN SUM(CAST (IFNULL (cast (a. Unavailable_Time as numeric), 0) AS BIGINT)) Else
+e End AS Unavailable,
+CASE WHEN cast (b.level1 id as numeric)<4 THEN SUM(CAST(IFNULL(cast (a.SignedOn_Time as numeric), 0) AS BIGINT)) Else 0
+End AS Signon,
+CASE WHEN cast (b.level_id as numeric) < 4 THEN SUM(CAST (IFNULL(cast (a.Talk_time as numeric), 0) AS BIGINT)) Else 0 End
+CASE WHEN cast(b.level_id as numeric) <4 THEN SUM(CAST(IFNULL(cast (a.Call_Hold_Time as numeric), 0) AS BIGINT)) Else 0
+AS Falk,
+CASE WHEN cast (b.level_id as numeric) <4 THEN SUM(CAST (IFNULL (cast (a.Cáll_Work_Time as numeric), 0) AS BIGINT)) Else 0
+End AS Hold,
+End AS Work,
+CASE WHEN b.enterprise_id in
+('4495815766', '1294824864', '2596489907', '4568927104','2987509857', '1791755608', '7912985533', '8553547467',
+'2763224556','6348668747') Then 10*3600
+Else 8 3600 End as WorkHoursInSeconds
+/** Jomes : essume 8 hours shift for all reps except the InternaL Tech Experts night shift hich witL be 10 hours ****/
+FROM {inp_db_cja}.{tbname_agent} a
+LEFT JOIN {inp_db_cja}.{tbname_hierarchy} b
+On a.employee_id = b.emp_id And a.stat_date between date (b.start_date) and date(b.end_date)
+--LEFT JOIN (Select Distinct eid, ag_grouping from IH) c On c. eid = b. enterprise_id
+LEFT 3OIN DT On -
+HERE a.stat Date BETWEEN DT.RecordStart AND DT . RecordEnd
+GROUP BY
+RptMth,
+a.Stat Date,
+b.emp_id,
+b.enterprise_id,
+b.level_id,
+b.function_desc,
+b.geographic_loc_desc,
+b.peoplesoft_title_id
+--C.ag grouping /*** Grouping by rule_type for Phase II ***/
+** excLuding the Partner reps that had -2 hrs signon time ***/
+--lHERE ( /*** Grouping by rule_type for Phase II ***/
+--(aggrouping NOT In ('Internal Advanced Solutions', 'Internal BGCO Dept Team', Internal GCO Phone Suppot, 'Internak
+Tech Advocates', 'Internat Tech Experts - Day', 'Internal Tech Experts - Night', 'Other')
+Spaces4
+341
+
+
 
 
 
