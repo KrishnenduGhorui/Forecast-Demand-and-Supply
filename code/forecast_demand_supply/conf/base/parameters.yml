@@ -13,7 +13,7 @@ env: "dev"
 run_key: "vbg_10_10_monthly_test"
 score_model id: "vbg_ftl_bgco"
 output_db name: "ds_work_tbls"
-output_ tb_name monthly: "vbg_ ftl_bgco_daşhboard_monthly_pred_tb1'
+output_ tb_name monthly: 'vbg_ ftl_bgco_daşhboard_monthly_pred_tb1'
 output_tb_name_ daily: 'vbgftl_bgco_dashboard_daily_pred_tbl'
 output_tb_name_ intraday: 'vbg_ftl_bgco_ dashboard_intraday_pred_tbl'
 output_metrics_monthly_tb_name: "vbgftl_bgco_dashboard_monthly_metrics"
@@ -25,7 +25,7 @@ output_whatif_scenario_daily_tb_name: 'vbg_ftl_bgco_dashboard_daily_whatif_scena
 output_whatif_scenario_intraday_tb_name: 'vbg ftl_ bgco_dashboard_intraday_whatif_scenario_tbl'
 output_project: "vz-it-np-fjpv-dev-vzdsdo-0"
 
-rule_type_list: ["Tech_Exp_Call', "BGCO_Core_Call', 'Federal_Cal1', 'Tech_Adv_Call', 'Gco_Core_Call')
+rule_type_list: ["Tech_Exp_Call", "BGCO_Core_Call", 'Federal_Cal1', 'Tech_Adv_Call', 'Gco_Core_Call')
 model_daily: ['PROPHET'] 
 model_monthly:['PROPHET','SARIMAX', 'ETS']
 monthly_forecast_period: 18
@@ -48,7 +48,7 @@ params_tes: 0
 daily_params_sarima: 0
 
 monthly_params_ets:
-  trend: ['add", 'mul' ]
+  trend: ['add', 'mul' ]
   error: ['add', 'mul']
   seasonal: ['add','mul']
   smoothing_level: [0.1,0.3,0.5,0.7,0.9)
