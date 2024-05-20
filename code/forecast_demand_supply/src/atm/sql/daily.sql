@@ -381,10 +381,38 @@ b.peoplesoft_title_id
 --C.ag grouping /*** Grouping by rule_type for Phase II ***/
 ** excLuding the Partner reps that had -2 hrs signon time ***/
 --lHERE ( /*** Grouping by rule_type for Phase II ***/
---(aggrouping NOT In ('Internal Advanced Solutions', 'Internal BGCO Dept Team', Internal GCO Phone Suppot, 'Internak
-Tech Advocates', 'Internat Tech Experts - Day', 'Internal Tech Experts - Night', 'Other')
-Spaces4
-341
+--(aggrouping NOT In ('Internal Advanced Solutions', 'Internal BGCO Dept Team', Internal GCO Phone Suppot, 'Internal TechAdvocates', 'Internat Tech Experts - Day', 'Internal Tech Experts - Night', 'Other')
+
+SELECT
+ICM.cal1_answer_dt,
+ICM.rule type,
+--ICM. interval_start,
+Count (Distinct ICM.eid) as Total_Agent,
+Sum(ICM.call_volume) as Volume,
+Sum(ICH.answered_volume) as Answered_Volume,
+Sum(ICM.answered within_30_volume) as calls_answered_ within_30,
+SAFE_DIVIDE (SUM(Agent.Talk + Agent.Hold + Agent. Work),SUM(Agent.CallsHandled) ) AS AHT,
+SAFE_DIVIDE (SUM(Agent .WorkHours InSeconds)- SUN(Agent.Signon) + SUM(Agent.Unavailable), SUM(Agent.lorkHoursInSeconds))
+AS SHR,
+J*** James: shrinkage with Lost hours are not correct in the ods_verint table, so we use the calculation of total hrs -
+signon time + unavailab Le time as the shrinkage_with_Lost_hrs ***/
+SAFE_DIVIDE (SUM(Agent. Talk + Agent.Hold + Agent.Work),SUM(Agent.Talk + Agent.Hold + Agent.Work + Agent.Available)) AS
+OCC,
+--SAFE_DIVIDE (SUM(Agent. Signon - Agent. Talk - Agent.HoLd - Agent. Work - Agent.Available), SUM(Agent. Signon) ) AS LOS,
+--SAFE_DIVIDE (SUM(Agent. WorkHoursInSeconds) /3600, Count (Agent. eid)) As WorkHours
+FROM ICM
+LEFT J0IN Agent On ICM.call_answer_dt = Agent.Stat_Date And ICM.eid = Agent.eid
+LEFT JOIN DT On -0
+VWHERE ICM.call_answer_dt BETWEEN DT. RecordStart AND DT.RecordEnd
+--AND ICH. ag._grouping Not in ('Abondon ', '0ther ') /*** Grouping by rule_type for Phase II ***/
+AND ICM.rule_type in ('BGCO Core Call','Federál Cal1', 'Gco Core Call', 'G1obal Call', 'Tech Adv Call', 'Tech Exp Call')
+
+GROUP BY 
+ICM.call_answer_dt,
+ICM.rule_type
+ORDER BY
+ICM.call_answer_dt,
+ICM.rule_type
 
 
 
