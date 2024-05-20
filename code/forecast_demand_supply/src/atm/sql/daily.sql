@@ -156,6 +156,194 @@ WHERE --r. VARIABLE8 <> i.BUS_RULE /*** Jamęs: Hide as it is a redacted field *
 --AND r. VARIABLE8 not Like %;% --get rid of a fw double xfers, pv8 is already Lost AND has the format ACSSREP; /***
 
 --AND r. VARIABLE8 not Like 'S K--get rid of any that contain spaces, cannot be valid; *** James: Hide as it is a
+AND Date(i.call_answer_dt) BETWEEN DT.RecordStart AND DT RecordEnd
+WHERE rownumber = 1 --THIS ENSURES WE NEVER CREATE MORE THAN 1 row per RECOVERYKEY
+SELECT
+rule_type,
+DATE_ TRUNC(call_answer_dt, MONTH) as call_ month,
+call_ answer dt,
+eid,
+count() call_volume,
+Sumanswered cnt) as answered volume,
+Sum(ansr_38_cnt) as answered_within_30 volume
+from
+(
+SELECT
+Case when r.rule_type In ('Tech Adv Call', 'Global Call') Then 'Tech Adv Call' Else r.rule_type End as rule_type,
+r.rule_dept,
+r.rule_desc,
+a.ag_desc,
+i,*
+from
+(
+SELECT
+i.recoverykey recovery_key,
+i.ivr call_id ivr_call_id,
+1.acd area nm,
+i.call_end_dt,
+i.call_end_tm,
+i.call_answer_dt,
+i.call_answer_tm,
+i.route_value,
+i.icm_acct_type_cd,
+mkt.vzmkt_cd,
+cal.line_type_cd,
+i.eqp_prod_id,
+i.cust_value,
+i.lang_pref_ind,
+i.cacs_state_cd,
+i.first_bill_cd,
+i.transfer_point,
+--CASE WHEN i. high_risk_ ind = 'H' THEN "H' ELSE 'N' END AS high_risk_ind,
+CASE WHEN i.high_risk_ind is null or i.high_risk_ind = THEN 'U' ELSE i.high_risk_ind END AS high risk_ind,
+i.cacs_Work_state_cd,
+i.ivr_cust_src_cd,
+COALESCE(
+1*** James: Dealing with the ";" and " " rules ***/
+CASE When patchbr.recover_bus_rule like '%;%' Or patchbr.recover_bus_rule like '% %' Then NÙLL Else
+patchbr.recover_bus_rule END,
+CASE WHEN (i.BUS_RULE='NA' OR i.BUS_ RULE is NULL) and i.eccr_dept_nm IN ('BGCO Tech', 'Business - FA', ' BSC') THEN
+'CATCH_NA_BGCO'
+WHEN (r_RULE_TYPE='Routing Fallout Call') and i.eccr dept_nm IN ('BGCO Tech', 'Business - FA', 'BSC') and
+i.icm_acct_type_cd='FEDC' THEN 'CATCHFED'
+WHEN (r_RULE_TYPE='Routíng Fallout Call') and i.eccr_dept_nm IN ('BGCO Tech', 'Business - FA", 'BSC') and
+i.icm_acct_type_cd='GOVC' THEN 'CATCH_ GOVC'
+WHEN (r_RULE_TYPE='Routing Fallout Call') and i.eccr_dept_nm IN (BGCO Tech', 'Business - FA', 'BSC') THEN
+'CATCH FALLOUT BGCO'
+ELSE i.bus_rule END) AS bus_rule,
+i.script_nm,
+CAST(i.eccr_line_bus_nm AS STRING) AS eccr_line_bus_nm,
+i.eccr_super_line_bus_nm,
+i.eccr_dept_nm,
+i.mtn,
+i.acd_appl_id,
+CASE WHEN(i.answered_cnt = 0 and i.call_offered_cnt = 1 and i.AGENT_GROUP_ID is null) THEN 999999
+ELSE i.AGENT_GROUP_ID
+END AS agent_group_id,
+i.transfer_flag,
+i.call_duration_seconds,
+i,ring_tm_seconds,
+i.delay_tm_seconds,
+i.tine_to_abandseconds,
+i.hold_tm_seconds,
+i.talk_tm_seconds,
+i.work_tm_seconds,
+i.local_q_tm_seconds,
+i.handle_tm_seconds,
+i.delay_answer_seconds,
+i.call_offered_cnt, 
+i.interval_start,
+i.interval_end,
+i.abandons_cnt,
+i.answered_cnt,
+i.ansr_30_cnt,
+i.ansr_30_to_40_cnt,
+CASE WHEN (1.answered_cnt = 0 AND i.call_offered_cnt 1 AND i.AGENT_GROUP ID IS NULL) THEN 999
+ELSE i. callcenterid_agent END AS callcenterid agent,
+i.ECCR_CALL_CTR_CD,
+CASE WHEN (i.answered_cnt = 0 and i.call_offered_cnt = 1 and i.AGENT_GROUPID IS NULL) THEN 999
+ELSE i.CALLCENTERID
+END AS callcenterid,
+i.sor_id,
+i.cust_id,
+i.cust_line_seq_id,
+i.acss_call_id,
+iv.DNIS_CD,
+COALESCE(cae. ecpd_profile_id, '0') ecpd_profile_id,
+i.eid
+FROM ICM_VT i
+/***************8
+Patch broken NA Rule BEGINS here
+*****/
+/*
+NOTE THIS IS A LEFT OUTER JOIN TABLE, do nọt inner join on it or records wilL be Lost. TCD AND RCD tables onty go back
+90 DAYS
+because TCD AND RCD. are so Limited by dates (90 days) we dont really have to put a date range in the WHERE clause.
+This code is slow, but only because the tables in DW Lack AND valuable indexing - do not attempt to alter the below
+methods each
+has been tested extensively to ensure clean data
+*/
+LEFT OUTER JOIN ICM PATCHNA_ VT patchbr
+ON patchbr.recoverykey = i.recoverykey -- END LEFT OUTER JOIN TABLE (PATCH)
+/*************
+Patch broken NA RuLe ENDS here
+******************/
+LEFT JOIN {inp_db_uda}.{tbname_cust_acct_line} as cal
+ON cal.sor id = i.sor_id
+AND cal.cust_id = i.cust_id
+AND cal.cust_line_seq_id = i.cust_line_seq_ id
+LEFT JOIN {inp_db_uda}.{tbname market} as mkt
+ON mikt.mikt_cd = cal.mkt_cd
+LEFT JOIN {inp db_uda}.{tbname ivrcall} iv
+ON iv.IVR_CALL ID = i.IVR_CALL_ID
+AND iv.TRANSFER_POINT IS NOT NULL
+  
+LEFT JOIN {inp_db_uda}.{tbname cust_ ecpd} cae
+ON i.cust id = cae.Cust id
+AND CASTi.call_ anser dt AS DATE) >= CAST(cae.ecpd eff_dt AS DATE)
+AND CAST (i.call_an swer_dt AS DATE), <= CAST(Cae.ecpd_term_dt AS DATE)
+LEFT JOIN (
+SELECT* except (R) From (
+SELECT row_number() 0VER (partition by Ag_Branch order by cast (Ag_Rcd_Id as numeric) desc) as R,
+FROM {inp_db_cja}. {tbname_meta_agg} )
+WHERE R = 1
+pXpX
+SELECT row_number() OVER (partition by Ag Branch order by cast (Ag Rcd_Id as numeric) desc) as R, *
+FROM (inp_db_cja).(tbname_meta_agg} )
+WHERE R = 1
+)a
+ON CAST(i.AGENT_GROUP_ID AS STRING) = a.AGENT_GROUP_ID
+--AND i.call answer dt BETWEEN a.eff_dt AND a. exp_dt /*** James: No need as we SELECT the newest ag ***/
+AND
+CAST(COALESCE (i.callcenterid_agent, i.CALLCENTERID) AS STRING) = a.call_center_id -- the coalesce is important!
+OR i.ECCR CALL CTR_CD = a.ECCR_CALL_CTR_CD
+OR (i.callcenterid_agent IS NULL AND a.AG_CENTER_BYPASS='Y')
+)
+WHERE (
+--r_rule_audit_ind = "y' OR a. audit_ind = 'y OR
+i.ECCR_DEPT_NM IN (BGCO Tech', 'BSC', 'Business - FA')
+--OR i.icm_acct_type_cd IN ("MAJX", "FEDC', 'SMBC', 'NATX, GOVC', 'CHAJ')
+AND Date(i. call_answer_dt) BETWEEN (start_date} AND (end_date)
+)i
+/******* Rejoin the Meta Rules table to find the rule_type, rule_dept, and rule_desc by the adjusted bus_rule *******/
+LEFT JOIN (
+SELECT * except (R) From(
+SELECT row_number ) oVER (partition by bus_rule order by cast(bus_rule_id as numeric) desc) as R,
+FROM (inp_db_cja).(tbname_meta_rules }. )
+WHERE R= 1
+)r
+ON r.bus_rule =i.bus_rule
+--AND i,call_answer_dt BETWEEN r.eff_dt AND r. exp_ dt /*** James: No need as we SELÉCT the newest rule ***/
+*******Rejoin, the Meta AG table to find the ag_desc by the adjusted AGENT_GROUP_ID, caLLcenterid_agent, and
+catLcenterid *******
+LEFT JOIN (
+SELECT* except (R) From(
+SELECT row_number() OVER (partition by Ag_Branch order by cast (Ag Rcd Id as numeric) desc) as R, *
+FROM (inp_db_cja}.(tbname_meta_agg)
+WHERE R= 1
+a
+ON CAST(i.AGENT_ GROUP_ID AS STRING) = a.AGENT_GROUP_ID
+--AND i.call_answer_dt BETWEEN a. eff_dt AND a.exp_dt /s** James: No need as we SELECT the newest ag ***/
+AND
+CAST(COALESCE (i.callcenterid_ agent, i.CALLCENTERID) AS STRING) = a.call_center_id -- the coalesce is important!
+OR i.ECCR_CALL_CTR_CD = a.ECCR_CALL_CTR_CD
+OR (i.callcenterid_agent IS NULL AND a.AG_CENTER_ BYPASS='Y')
+where rule type in ('BGCO Core Call', 'Federal Call','GCO Core Call', 'Tech Adv Call','Tech Exp Call')
+group by call_month, call_ansiver_dt,rule_type, eid
+),
+Agent AS
+SELECT*
+
+
+
+
+
+
+
+
+
+
+
 
 
 
