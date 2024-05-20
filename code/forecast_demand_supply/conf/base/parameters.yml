@@ -5,7 +5,7 @@ Volume: "Volume"
 key_arg_aht: 'AHT'
 key_arg_occ: 'OCC'
 key_arg_shr: 'SHR'
-monthly_sql_file_path:'./src/atm/sql/monthly.sq1'
+monthly_sql_file_path: './src/atm/sql/monthly.sq1'
 daily_sql_file_path: './src/atm/sq1/daily.sq1'
 intraday_sql_ file_path: './src/atm/sql/intraday.sql'
 bq_project: 'vz-it-np-ivqv-dev-mldmdo-0'
