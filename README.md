@@ -86,6 +86,11 @@ Intraday – each 30 mins interval in a day , future 60 days out   
 
 4. **Parallel processing** – we code for parallel processing using **joblib library, Parallel and delayed method**. For each rule type 4s models for metrics (Call Volume, AHT, OCC, SHR)will be trained in parallel. Now for each rule type training is done parallelly. So, total 5 call type there, for each call type, 4 attributes there.Total 20 models being trained in parallel to forecast. 
 
+## Code folder structure 
+
+![image](https://github.com/KrishnenduGhorui/Forecast-Demand-and-Supply/assets/77465776/7053c371-f597-45f0-8948-2f9b4484b0c0)
+
+
 ## Command to run pipeline - 
 
     kedro run --pipeline=pipeline_name 
