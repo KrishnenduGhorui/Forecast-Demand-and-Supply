@@ -90,6 +90,9 @@ Intraday – each 30 mins interval in a day , future 60 days out   
 
 ![image](https://github.com/KrishnenduGhorui/Forecast-Demand-and-Supply/assets/77465776/f359a073-57c5-42c5-9af9-40485b3b12fd)
 
+## Pipeline flow chart 
+
+![image](https://github.com/KrishnenduGhorui/Forecast-Demand-and-Supply/assets/77465776/38923121-311d-4d11-a500-a74287c24273)
 
 ## Command to run pipeline - 
 
