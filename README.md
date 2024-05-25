@@ -88,7 +88,7 @@ Intraday – each 30 mins interval in a day , future 60 days out   
 
 ## Code folder structure 
 
-![image](https://github.com/KrishnenduGhorui/Forecast-Demand-and-Supply/assets/77465776/7053c371-f597-45f0-8948-2f9b4484b0c0)
+![image](https://github.com/KrishnenduGhorui/Forecast-Demand-and-Supply/assets/77465776/f359a073-57c5-42c5-9af9-40485b3b12fd)
 
 
 ## Command to run pipeline - 
