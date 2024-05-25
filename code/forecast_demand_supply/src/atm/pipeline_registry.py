@@ -53,7 +53,7 @@ def register_pipelines (**kwargs) -> Dict[str, Pipeline] :
       
     # Only for daily
     "daily_pipeline":
-                     data pipeline_daily
+                     data_pipeline_daily
                    + Volume_pipeline_daily
                    + calls_answered_within_30_pipeline_daíly
                    + aht_pipeline_daily
