@@ -32,6 +32,8 @@ Develop an AI system that will predict required manpower in support call center 
     * Develop a pipeline to automate whole process (step 1-5, except EDA part) by **Kedro framework** on **GCP Domino platform**
     * Make **processing in parallel** for each call type & each metric **to reduce run time (from 1.5 hours to 20 minutes)** using **Joblib library's Parallel,delayed method**.
     * Make whole code parameterized using **yaml file** and deployed on **Google cloud platform**.
+  
+## Modeling Flow chart
 
 ![image](https://github.com/KrishnenduGhorui/Forecast-Demand-and-Supply/assets/77465776/a4b40d28-c151-4049-975e-72190104968d)
 
